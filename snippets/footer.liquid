@@ -1,0 +1,94 @@
+<footer>
+    {% unless settings.site_logo_light == blank %}
+    <p><img src="{{ settings.site_logo_light.src | img_url: '240x' }}" alt="{{ shop.name }}"></p>
+    {% endunless %}
+    <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        {% unless shop.name == blank %}
+        <span class="text-uppercase" itemprop="name">{{ shop.name }}</span><br>
+        {% endunless %}
+        {% unless shop.address.street == blank %}
+        <span itemprop="streetAddress">{{ shop.address.street }}</span><br>
+        {% endunless %}
+        {% unless shop.address.zip == blank %}
+        <span itemprop="postalCode">{{ shop.address.zip }}</span><br>
+        {% endunless %}
+        {% unless shop.address.city == blank %}
+        <span itemprop="addressLocality">{{ shop.address.city }}</span><br>
+        {% endunless %}
+        {% unless shop.address.province == blank %}
+        <span itemprop="addressRegion">{{ shop.address.province }}</span><br>
+        {% endunless %}
+        {% unless shop.address.country == blank %}
+        <span itemprop="addressCountry">{{ shop.address.country }}</span>
+        {% endunless %}
+    </address>
+
+    <p>
+
+        {% unless settings.site_instagram == blank %}
+        <a href="{{ settings.site_instagram }}" target="_blank" title="Visit us on Instagram">
+            {% render 'logo-instagram.svg' %}
+        </a>
+        {% endunless %}
+
+        {% unless settings.site_facebook == blank %}
+        <a href="{{ settings.site_facebook }}" target="_blank" title="Visit us on Facebook">
+            {% render 'logo-facebook.svg' %}
+        </a>
+        {% endunless %}
+
+        {% unless settings.site_pinterest == blank %}
+        <a href="{{ settings.site_pinterest }}" target="_blank" title="Visit us on Pinterest">
+            {% render 'logo-pinterest.svg' %}
+        </a>
+        {% endunless %}
+
+        {% unless settings.site_linkedin == blank %}
+        <a href="{{ settings.site_linkedin }}" target="_blank" title="Visit us on LinkedIn">
+            {% render 'logo-linkedin.svg' %}
+        </a>
+        {% endunless %}
+
+        {% unless settings.site_twitter == blank %}
+        <a href="{{ settings.site_twitter }}" target="_blank" title="Visit us on Twitter">
+            {% render 'logo-twitter.svg' %}
+        </a>
+        {% endunless %}
+    </p>
+
+    <nav itemscope itemtype="https://schema.org/SiteNavigationElement">
+        <h2>Navigation</h2>
+        {% for link in linklists.footer.links %}
+            {% if link.active %}
+                <p><em title="Your are here" itemprop="name">{{ link.title }}</em></p>
+            {% else %}
+                <p><a href="{{ link.url }}" itemprop="name">{{ link.title }}</a></p>
+            {% endif %}
+        {% endfor %}
+        <h2>Your account</h2>
+        <p><a href="/cart" itemprop="name">Shopping cart</a></p>
+        {% if shop.customer_accounts_enabled %}
+            {% if customer %}
+                <p><a href="/account" itemprop="name">account</a></p>
+                <p>{{ 'log out' | customer_logout_link }}</p>
+            {% else %}
+                <p>{{ 'log in' | customer_login_link }}</p>
+                <p>{{ 'register' | customer_register_link }}</p>
+            {% endif %}
+        {% endif %}
+    </nav>
+
+    <form action="/search" method="get" role="search">
+        <input type="hidden" name="options[unavailable_products]" value="hide">
+        <p>
+            <label for="search-field">Search site</label>
+            <input type="search" name="q" id="search-field" placeholder="Search site" role="search">
+            <input type="submit" value="Submit">
+        </p>
+    </form>
+
+    {{ settings.site_legal }}
+
+    <p>&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: '/' }}</p>
+
+</footer>

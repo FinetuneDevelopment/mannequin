@@ -6,5 +6,189 @@
     "theme_author": "Shopify",
     "theme_documentation_url": "https://github.com/Shopify/themekit",
     "theme_support_url": "https://github.com/Shopify/themekit/issues"
+  },
+  {
+    "name": "Input",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "site_logo_dark",
+        "label": "Logo (dark)"
+      },
+      {
+        "type": "image_picker",
+        "id": "site_logo_light",
+        "label": "Logo (light)"
+      },
+      {
+        "type": "text",
+        "id": "site_instagram",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "text",
+        "id": "site_facebook",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "text",
+        "id": "site_pinterest",
+        "label": "Pinterest URL"
+      },
+      {
+        "type": "text",
+        "id": "site_linkedin",
+        "label": "LinkedIn URL"
+      },
+      {
+        "type": "text",
+        "id": "site_twitter",
+        "label": "Twitter URL"
+      },
+      {
+        "type": "richtext",
+        "id": "site_legal",
+        "label": "Legal disclaimer"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Background color",
+        "default": "#fafafa"
+      },
+      {
+        "type": "color",
+        "id": "color_brand_bright",
+        "label": "Bright brand color",
+        "default": "#009fe3"
+      },
+      {
+        "type": "color",
+        "id": "color_brand_mid",
+        "label": "Mid brand color",
+        "default": "#07b"
+      },
+      {
+        "type": "color",
+        "id": "color_brand_dark",
+        "label": "Dark brand color",
+        "default": "#273583"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "label": "Error color",
+        "default": "#da3434",
+        "info": "This indicates errors in form fields"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Success color",
+        "default": "#2e7b06",
+        "info": "Success, in form fields"
+      },
+      {
+        "type": "color",
+        "id": "color_tint1",
+        "label": "Color tint 1",
+        "default": "#d7f4c8",
+        "info": "Tints should be very light in colour"
+      },
+      {
+        "type": "color",
+        "id": "color_tint2",
+        "label": "Color tint 2",
+        "default": "#ffeea0"
+      },
+      {
+        "type": "color",
+        "id": "color_tint3",
+        "label": "Color tint 3",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "color_grey_light",
+        "label": "Light grey",
+        "default": "#ececec"
+      },
+      {
+        "type": "color",
+        "id": "color_grey_mid",
+        "label": "Mid grey",
+        "default": "#7c7c7c"
+      },
+      {
+        "type": "color",
+        "id": "color_grey_dark",
+        "label": "Dark grey",
+        "default": "#363636"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "font_picker",
+        "label": "Heading font",
+        "id": "heading_font",
+        "default": "varela_round_n4"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font light",
+        "id": "body_font_light",
+        "default": "source_sans_pro_n3"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font",
+        "id": "body_font",
+        "default": "source_sans_pro_n4"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font semi-bold",
+        "id": "body_font_semi_bold",
+        "default": "source_sans_pro_n6"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font bold",
+        "id": "body_font_bold",
+        "default": "source_sans_pro_n7"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font light italic",
+        "id": "body_font_light_italic",
+        "default": "source_sans_pro_i3"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font italic",
+        "id": "body_font_italic",
+        "default": "source_sans_pro_i4"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font semi-bold italic",
+        "id": "body_font_semi_bold_italic",
+        "default": "source_sans_pro_i6"
+      },
+      {
+        "type": "font_picker",
+        "label": "Body font bold italic",
+        "id": "body_font_bold_italic",
+        "default": "source_sans_pro_i7"
+      }
+    ]
   }
 ]

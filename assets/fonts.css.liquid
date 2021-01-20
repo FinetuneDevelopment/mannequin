@@ -1,0 +1,29 @@
+{% assign heading_font = settings.heading_font %}
+{% assign body_font = settings.body_font %}
+
+{{ heading_font | font_face: font_display: 'swap' }}
+{{ body_font | font_face: font_display: 'swap' }}
+
+{%- assign body_font_light = body_font | font_modify: 'weight', 'lighter' -%}
+{%- assign body_font_semi_bold = body_font | font_modify: 'weight', 'bold' -%}
+{%- assign body_font_bold = body_font | font_modify: 'weight', 'bolder' -%}
+{%- assign body_font_light_italic = body_font_light | font_modify: 'style', 'italic' -%}
+{%- assign body_font_italic = body_font | font_modify: 'style', 'italic' -%}
+{%- assign body_font_semi_bold_italic = body_font_semi_bold | font_modify: 'style', 'italic' -%}
+{%- assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic' -%}
+
+{{ body_font_light | font_face: font_display: 'swap' }}
+{{ body_font_semi_bold | font_face: font_display: 'swap' }}
+{{ body_font_bold | font_face: font_display: 'swap' }}
+{{ body_font_light_italic | font_face: font_display: 'swap' }}
+{{ body_font_italic | font_face: font_display: 'swap' }}
+{{ body_font_semi_bold_italic | font_face: font_display: 'swap' }}
+{{ body_font_bold_italic | font_face: font_display: 'swap' }}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+}
+
+body, input, textarea {
+    font-family: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+}
