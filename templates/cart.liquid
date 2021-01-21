@@ -1,5 +1,7 @@
+<!-- start {{ template }} -->
+<h1>Cart</h1>
+
 {% if cart.item_count > 0 %}
-  <h1>cart</h1>
   <form action="/cart" method="post" novalidate>
     <table>
       <thead>
@@ -40,7 +42,24 @@
       <button type="submit" name="checkout">Checkout</button>
     </div>
   </form>
+
 {% else %}
-  <h2>cart</h2>
-  Cart is empty
+  <p>Your cart is empty. Have you seen our collections?</p>
+  {%- for collection in collections -%}
+    {%- if collection.image -%}
+      {%- assign collection_image = collection.image -%}
+    {%- elsif collection.products.first and collection.products.first.images != empty -%}
+      {%- assign collection_image = collection.products.first.featured_image -%}
+    {%- else -%}
+      {%- assign collection_image = blank -%}
+    {%- endif -%}
+
+    <section aria-label="{{ collection.title }}">
+      <a href="{{ collection.url }}">
+        <h2>{{ collection.title }}</h2>
+        <p><img src="{{ collection_image | img_url: '60x60', crop: 'center' }}" alt="{{ collection.title }}"></p>
+      </a>
+    </section>
+  {%- endfor -%}
 {% endif %}
+<!-- end {{ template }} -->
