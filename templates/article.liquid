@@ -24,16 +24,26 @@
 
   {% form 'new_comment', article %}
     {{ form.errors | default_errors }}
-    <label for="CommentAuthor">name</label>
-    <input type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
+    <p>
+      <label for="CommentAuthor">Your name</label>
+      <br>
+      <input type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
+    </p>
 
-    <label for="CommentEmail">email</label>
-    <input type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+    <p>
+      <label for="CommentEmail">Email address</label>
+      <br>
+      <input type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}">
+    </p>
 
-    <label for="CommentBody">message</label>
-    <textarea name="comment[body]" id="CommentBody" placeholder="message">{{ form.body }}</textarea>
+    <p>
+      <label for="CommentBody">Your message</label>
+      <br>
+      <textarea name="comment[body]" id="CommentBody" placeholder="Your message">{{ form.body }}</textarea>
+    </p>
 
-    <input type="submit" value="post">
+    <p><input type="submit" value="Post"></p>
   {% endform %}
+
 {% endif %}
 <!-- end {{ template }} -->
