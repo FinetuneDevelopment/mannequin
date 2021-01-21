@@ -1,0 +1,10 @@
+{% comment %} Links, allowing editors to change the metafield data {% endcomment %}
+{% capture CFH %}{{ content_for_header }}{% endcapture %}
+{% if CFH contains 'admin_bar_iframe' %}
+  {% assign admin = true %}
+{% elsif CFH contains 'preview_bar_injector-' %}
+  {% assign admin = true %}
+{% elsif CFH contains 'adminBarInjector' %}
+  {% assign admin = true %}
+{% endif %}
+{{ admin }}

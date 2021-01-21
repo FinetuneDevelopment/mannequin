@@ -1,18 +1,250 @@
+<h1>{{ collection.title }}</h1>
+
+{% comment %} Product filters {% endcomment %}
+<form data-js="filter" action="#" method="get">
+  <h2>Filter products</h2>
+  {% comment %} Working out the highest and lowest prices of all the product in this collection {% endcomment %}
+  {% assign productsSorted = collection.products | sort: 'price' %}
+  {% assign priceHigh = productsSorted.last.price %}
+  {% assign priceLow = productsSorted.first.price %}
+  {% comment %} Creating the currency symbol variable (e.g. £) {% endcomment %}
+  {% capture currencyString %}{{ shop.money_format }}{% endcapture %}
+  {% assign tempArray = currencyString | split: '{' %}
+  {% assign currencySymbol = tempArray.first %}
+  <fieldset>
+    <legend>By price</legend>
+    <p>
+      <input type="range" id="price-range-min" name="price-range-min" min="{{ priceLow | divided_by: 100 }}" max="{{ priceHigh | divided_by: 100 }}" value="{{ priceLow | divided_by: 100 }}">
+      <label for="price-range-min">Minimum price</label>
+    </p>
+    <p>{{ currencySymbol }}<output for="price-range-min">{{ priceLow | divided_by: 100 }}</output></p>
+
+    <p>
+      <input type="range" id="price-range-max" name="price-range-max" min="{{ priceLow | divided_by: 100 }}" max="{{ priceHigh | divided_by: 100 }}" value="{{ priceHigh | divided_by: 100 }}">
+      <label for="price-range-max">Maximum price</label>
+    </p>
+    <p>{{ currencySymbol }}<output for="price-range-max">{{ priceHigh | divided_by: 100 }}</output></p>
+  </fieldset>
+
+  <fieldset>
+    <legend>By tags</legend>
+    <p>
+      {% for tag in collection.all_tags %}
+        <input type="checkbox" name="tags" id="{{ tag }}" class="toggle sr-only" data-js="tag">
+        <label for="{{ tag }}" class="btn btn-pill">{{ tag }}</label>
+      {% endfor %}
+    </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>By product type</legend>
+    <p>
+      {% comment %} Creating an Array of all product types {% endcomment %}
+      {% capture allTypes %}{% for product in collection.products %}{{ product.type }}|{% endfor %}{% endcapture %}
+      {% assign uniqueTypes = allTypes | split: "|" | uniq %}
+      {% for type in uniqueTypes %}
+      <input type="radio" name="ProductType" id="{{ type }}" class="toggle sr-only" data-js="choice">
+      <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+      {% endfor %}
+    </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>By manufacturer</legend>
+      <p>
+        {% comment %} Creating an Array of all vendor types {% endcomment %}
+        {% capture allVendors %}{% for product in collection.products %}{{ product.vendor }}|{% endfor %}{% endcapture %}
+        {% assign uniqueVendors = allVendors | split: "|" | uniq %}
+        {% for vendor in uniqueVendors %}
+        <input type="radio" name="vendor" id="{{ vendor }}" class="toggle sr-only" data-js="choice">
+        <label for="{{ vendor }}" class="btn btn-pill">{{ vendor }}</label>
+        {% endfor %}
+      </p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Suitable for</legend>
+      {% comment %}
+        Build up the other filters, based on the metafields
+        Note that to account for whitespace, the capture should be on one line.
+      {% endcomment %}
+      {% capture allSuitableFor %}{% for product in collection.products %}{% for category in product.metafields.SuitableFor %}{{ category.first }}|{% endfor %}{% endfor %}{% endcapture %}
+      {% assign uniqueSuitableFor = allSuitableFor | split: "|" | uniq %}
+      {% comment %} Only show filters relevant to this collection {% endcomment %}
+      {% if uniqueSuitableFor.size > 0 %}
+      <p>
+        {% for category in uniqueSuitableFor %}
+        <input type="radio" name="SuitableFor" id="{{ category }}" class="toggle sr-only" data-js="metafield">
+        <label for="{{ category }}" class="btn btn-pill">{{ category }}</label>
+        {% endfor %}
+      </p>
+      {% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend>Occasion</legend>
+      {% capture allOccasions %}{% for product in collection.products %}{% for occasion in product.metafields.Occasion %}{{ occasion.first }}|{% endfor %}{% endfor %}{% endcapture %}
+      {% assign uniqueOccasions = allOccasions | split: "|" | uniq %}
+      {% comment %} Only show filters relevant to this collection {% endcomment %}
+      {% if uniqueOccasions.size > 0 %}
+      <p>
+        {% for type in uniqueOccasions %}
+        <input type="radio" name="occasion" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+        {% endfor %}
+      </p>
+      {% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend>Media supported</legend>
+      {% capture allMP3 %}{% for product in collection.products %}{% for feature in product.metafields.mp3 %}{{ feature.first }}|{% endfor %}{% endfor %}{% endcapture %}
+      {% assign uniqueMP3 = allMP3 | split: "|" | uniq %}
+      {% comment %} Only show filters relevant to this collection {% endcomment %}
+      {% if uniqueMP3.size > 0 %}
+      <p>
+        {% for type in uniqueMP3 %}
+        <input type="radio" name="mpthree" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+        {% endfor %}
+      </p>
+      {% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend><abbr title="Thermal Overall Grade">TOG</abbr> value</strong></legend>
+      {% capture allTog %}{% for product in collection.products %}{% for value in product.metafields.tog %}{{ value.first }}|{% endfor %}{% endfor %}{% endcapture %}
+      {% assign uniqueTog = allTog | split: "|" | uniq %}
+      {% comment %} Only show filters relevant to this collection {% endcomment %}
+      {% if uniqueTog.size > 0 %}
+      <p>
+        {% for type in uniqueTog %}
+        <input type="radio" name="tog" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+        {% endfor %}
+      </p>
+      {% endif %}
+  </fieldset>
+
+  <fieldset>
+    <legend>Material used</legend>
+      {% capture allMaterial %}{% for product in collection.products %}{% for type in product.metafields.material %}{{ type.first }}|{% endfor %}{% endfor %}{% endcapture %}
+      {% assign uniqueMaterial = allMaterial | split: "|" | uniq %}
+      {% comment %} Only show filters relevant to this collection {% endcomment %}
+      {% if uniqueMaterial.size > 0 %}
+      <p>
+        {% for type in uniqueMaterial %}
+        <input type="radio" name="material" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+        {% endfor %}
+      </p>
+      {% endif %}
+  </fieldset>
+
+  <p>
+    <input type="checkbox" id="inStock">
+    <label for="inStock">Show only products in stock</label>
+  </p>
+
+  <p><input type="reset" value="Clear all filters"></p>
+</form>
+
+{% comment %} Links to enable Shopify editors to change the metafield data {% endcomment %}
+{% capture admin %}{% render 'admin-check' %}{% endcapture %}
+{% if admin %}
+  <h3>Edit metafield data</h3>
+  <ul>
+    <li><a href="/admin/bulk?resource_name=Product&edit=metafields.SuitableFor.Vegetarians%3Aboolean%2Cmetafields.SuitableFor.Vegans%3Aboolean%2Cmetafields.SuitableFor.Children%3Aboolean%2Cmetafields.SuitableFor.NutAllergy%3Aboolean%2Cmetafields.SuitableFor.Frail%3Aboolean%2Cmetafields.SuitableFor.Pregnant%3Aboolean">Edit Suitable for</a></li>
+    <li><a href="/admin/bulk?resource_name=Product&edit=metafields.Occasion.birthday%3Aboolean%2Cmetafields.Occasion.christmas%3Aboolean%2Cmetafields.Occasion.valentines%3Aboolean%2Cmetafields.Occasion.berevement%3Aboolean">Edit product occasion</a></li>
+    <li><a href="/admin/bulk?resource_name=Product&edit=metafields.mp3.mpthree%3Aboolean%2Cmetafields.mp3.mpfour%3Aboolean%2Cmetafields.mp3.OggVortis%3Aboolean%2Cmetafields.mp3.wav%3Aboolean%2Cmetafields.mp3.flac%3Aboolean%2Cmetafields.mp3.aac%3Aboolean%2Cmetafields.mp3.wma%3Aboolean%2Cmetafields.mp3.ape%3Aboolean">Edit MP3 metafields</a></li>
+    <li><a href="/admin/bulk?resource_name=Product&edit=metafields.tog.light%3Aboolean%2Cmetafields.tog.medium%3Aboolean%2Cmetafields.tog.heavy%3Aboolean">Edit TOG metafields</a></li>
+    <li><a href="/admin/bulk?resource_name=Product&edit=metafields.material.wool%3Aboolean%2Cmetafields.material.wool-mix%3Aboolean%2Cmetafields.material.cotton%3Aboolean%2Cmetafields.material.cotton-mix%3Aboolean%2Cmetafields.material.cashmere%3Aboolean%2Cmetafields.material.cashmere-mix%3Aboolean%2Cmetafields.material.angora%3Aboolean%2Cmetafields.material.angora-mix%3Aboolean%2Cmetafields.material.man-made%3Aboolean">Edit material metafields</a></li>
+  </ul>
+{% endif %}
+
+{% comment %} Product listing {% endcomment %}
 {% paginate collection.products by 2 %}
-  <h1>{{ collection.title }}</h1>
-  {% for product in collection.products %}
-    <div>
-      <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-      {{ product.price | money }}
-      {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
-      <a href="{{ product.url | within: collection }}">
-        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-      </a>
-    </div>
-  {% else %}
-    <p>no matches</p>
-  {% endfor %}
+  <div data-js="products">
+    <noscript>
+    {% for product in collection.products %}
+      <section aria-label="{{ product.title }}" itemscope="" itemtype="http://schema.org/Product">
+        <p><img src="{{ product.featured_image.src | img_url: '500x500', crop: 'center' }}" alt="{{ product.featured_image.alt | escape }}" itemprop="image" loading="lazy"></p>
+        <h3 itemprop="name">{{ product.title }}</h3>
+        {{ product.description }}
+        <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+          {% unless product.compare_at_price_max == 0 %}
+          <p>Retail: <del itemprop="highPrice">{{ product.compare_at_price_max | money }}</del></p>
+          {% endunless %}
+          <p itemprop="price">{{ product.price | money }}</p>
+        </div>
+        {% unless product.compare_at_price_max == 0 %}
+          {% assign savings = product.compare_at_price_max | minus: product.price %}
+          <p>Saving {{ savings | money }}</p>
+        {% endunless %}
+        {% if product.available %}
+        {% comment %} Note that this does not take into account variants {% endcomment %}
+        <p><a href="/cart/add?id={{ product.variants[0].id }}">Order now</a></p>
+        {% else %}
+        <p><strong>Sorry - this product is sold out</strong></p>
+        {% endif %}
+        <p><a href="{{ product.url | within: collection }}">More information<span class="sr-only"> about {{ product.title }}</span></a></p>
+      </section>
+    {% else %}
+      <p>no matches</p>
+    {% endfor %}
+    </noscript>
+  </div>
+  <noscript>
   {% if paginate.pages > 1 %}
     {{ paginate | default_pagination }}
   {% endif %}
+  </noscript>
 {% endpaginate %}
+
+<script>
+var objProducts = [ {% comment %} Generating the custom JSON {% endcomment %}
+  {% for product in collection.products %}
+  {
+    "title": "{{ product.title }}",
+    "image": "{{ product.featured_image.src | img_url: '372x372', crop: 'center' }}",
+    "imageAlt": "{{ product.featured_image.alt | escape }}",
+    "description": "{{ product.description | replace: '"', '&quot;' | strip_html | strip_newlines | truncate: 50 }}",
+    {% if product.compare_at_price_max != 0 %} {% assign savings = product.compare_at_price_max | minus: product.price %}
+    "highPrice": "{{ product.compare_at_price_max | money }}",
+    "saving": "{{ savings | money }}",
+    {% endif %}
+    "lowPrice": "{{ product.price | money }}",
+    "intPrice": {{ product.price }},
+    "inStock": {% if product.available %}true{% else %}false{% endif %},
+    "id": "{{ product.variants[0].id }}",
+    "url": "{{ product.url | within: collection }}",
+    {% if product.type.size > 0 %}
+    "ProductType": "{{ product.type }}",
+    {% endif %}
+    {% if product.vendor.size > 0 %}
+    "vendor": "{{ product.vendor }}",
+    {% endif %}
+    {% if product.tags.size > 0 %}
+    "tags": {{ product.tags | json }},
+    {% endif %}
+    {% if product.metafields.SuitableFor.size > 0 %}
+    "SuitableFor": "{% for type in product.metafields.SuitableFor %}{% if type.last == 1 %}{{ type.first }}|{% endif %}{% endfor %}",
+    {% endif %}
+    {% if product.metafields.Occasion.size > 0 %}
+    "occasion": "{% for type in product.metafields.Occasion %}{% if type.last == 1 %}{{ type.first }}|{% endif %}{% endfor %}",
+    {% endif %}
+    {% if product.metafields.mp3.size > 0 %}
+    "mpthree": "{% for type in product.metafields.mp3 %}{% if type.last == 1 %}{{ type.first }}|{% endif %}{% endfor %}",
+    {% endif %}
+    {% if product.metafields.tog.size > 0 %}
+    "tog": "{% for type in product.metafields.tog %}{% if type.last == 1 %}{{ type.first }}|{% endif %}{% endfor %}",
+    {% endif %}
+    {% if product.metafields.material.size > 0 %}
+    "material": "{% for type in product.metafields.material %}{% if type.last == 1 %}{{ type.first }}|{% endif %}{% endfor %}",
+    {% endif %}
+    "end": "end"
+  }{% if forloop.last != true %},{% endif %}
+  {% endfor %}
+];
+</script>
+{{ 'product-filter.js' | asset_url | script_tag }}
