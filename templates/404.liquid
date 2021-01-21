@@ -1,2 +1,29 @@
+<!-- start {{ template }} -->
 <h1>{{ 'general.404.title' | t }}</h1>
-<p>{{ 'general.404.subtext_html' | t }}</p>
+<form method="get" action="/search">
+  <p>{{ 'general.404.subtext_html' | t }}</p>
+  <p>Would you like to search for <span data-js="bad-url">something</span> instead?</p>
+  <p>
+    <label for="search-field-page">Search site</label>
+    <input type="search" name="q" id="search-field-page" placeholder="Search site" role="search">
+    <input type="submit" value="Search">
+  </p>
+</form>
+{% comment %} While it's possible to get the URL using Liquid and request.path,
+for cacheing reasons, it's better to do it with JavaScript {% endcomment %}
+<script>
+(function () {
+  // The current path after the domain, made into a search query
+  // Note: this does not use the querystring
+  var searchTerms = window.location.pathname.replace(/-/g,' ').replace(/\//g,' ').replace(/_/g,' ');
+  if (searchTerms !== '') {
+    // Update the content above the form
+    var elTerm = document.querySelector('[data-js="bad-url"]');
+    if (elTerm) elTerm.innerHTML = '<strong>' + searchTerms + '</strong>';
+    // Updating the form field
+    var searchField = document.getElementById('search-field-page');
+    if (searchField) searchField.value = searchTerms;
+  }
+})();
+</script>
+<!-- end {{ template }} -->

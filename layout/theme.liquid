@@ -31,9 +31,9 @@
     <link rel="image_src" href="{{ page-img | file_img_url: '1200x630', crop: 'center' }}">
   {% endif %}
   <link rel="shortcut icon" href="{{ 'favicon.ico' | asset_url }}">
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'favicon.png' | asset_img_url: '180x' }}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon.png' | asset_img_url: '32x' }}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{{ 'favicon.png' | asset_img_url: '16x' }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ settings.favicon.src | img_url: '180x' }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon.src | img_url: '32x' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ settings.favicon.src | img_url: '16x' }}">
   <link rel="manifest" href="{{ 'site.webmanifest' | asset_url }}">
   <link rel="mask-icon" href="{{ 'safari-pinned-tab.svg' | asset_url }}" color="{{ settings.color_brand_mid }}">
   <meta name="msapplication-TileColor" content="{{ settings.color_brand_mid }}">

@@ -17,8 +17,9 @@
       },
       {
         "type": "image_picker",
-        "id": "site_logo_light",
-        "label": "Logo (light)"
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Image should be at least 260px square"
       },
       {
         "type": "text",
