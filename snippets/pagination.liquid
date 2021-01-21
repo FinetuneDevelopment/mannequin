@@ -1,0 +1,42 @@
+{% comment %} Note that the inline styles used in this pagination should be replaced with classes {% endcomment %}
+{% if paginate.previous %}
+    <a href="{{ paginate.previous.url }}">
+        {% render 'icon-arrow-previous.svg' %}
+    </a>
+{% else %} {% comment %} User is on the first page of results {% endcomment %}
+    <span style="color: {{ settings.color_grey_mid }};" title="You are on the first page of results">
+        {% render 'icon-arrow-previous.svg' %}
+    </span>
+{% endif %}
+
+{% for part in paginate.parts %}
+    {% if part.is_link %} {% comment %} We have a valid URL for this page in the results {% endcomment %}
+        <a href="{{ part.url }}">
+            {% comment %} The following <span> should be hidden, except for screen readers {% endcomment %}
+            <span>page</span>
+            {{ part.title }}
+        </a>
+    {% else %}
+        {% if part.title == paginate.current_page %} {% comment %} The current result represents the current page {% endcomment %}
+            <span style="color: {{ settings.color_brand_bright }};" aria-current="page" title="This is the current page">
+                {% comment %} The following <span> should be hidden, except for screen readers {% endcomment %}
+                <span>page</span>
+                {{ part.title }}
+            </span>
+        {% else %} {% comment %} The current result is not the current page, but we do not have a URL for it {% endcomment %}
+            {% comment %} The following <span> should be hidden, except for screen readers {% endcomment %}
+            <span>page</span>
+            {{ part.title }}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% if paginate.next %} {% comment %} The user has not reached the last page of results {% endcomment %}
+    <a href="{{ paginate.next.url }}">
+        {% render 'icon-arrow-next.svg' %}
+    </a>
+{% else %} {% comment %} The user is on the last page of the results {% endcomment %}
+    <span style="color: {{ settings.color_grey_mid }};" title="You are on the last page of results">
+        {% render 'icon-arrow-next.svg' %}
+    </span>
+{% endif %}

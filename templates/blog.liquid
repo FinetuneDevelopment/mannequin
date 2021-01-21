@@ -1,22 +1,23 @@
-{% paginate blog.articles by 5 %}
+<!-- start {{ template }} -->
+{% paginate blog.articles by 2 %}
 
-<h1>{{ blog.title }}</h1>
-{% for article in blog.articles %}
-  <div>
-    <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-    {{ article.author }} @ {{ article.created_at }}
-    <div>
+  <h1>{{ blog.title }}</h1>
+  {% for article in blog.articles %}
+    <article aria-label="{{ article.title }}">
+      <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
+      <p><strong>{{ article.author }}</strong>, {{ article.created_at | time_tag: '%a, %b %d, %Y' }}</p>
       {% if article.excerpt.size > 0 %}
         {{ article.excerpt }}
       {% else %}
         <p>{{ article.content | strip_html | truncatewords: 100 }}</p>
       {% endif %}
-    </div>
-  </div>
-{% endfor %}
+    </article>
+  {% endfor %}
 
-{% if paginate.pages > 1 %}
-  {{ paginate | default_pagination }}
-{% endif %}
+  {% if paginate.pages > 1 %}
+    {% assign paginate = paginate %}
+    <p>{% render 'pagination', paginate: paginate %}</p>
+  {% endif %}
 
 {% endpaginate %}
+<!-- end {{ template }} -->
