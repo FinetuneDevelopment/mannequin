@@ -1,0 +1,312 @@
+<!-- metadata snippet -->
+{% comment %}
+For a full write-up of how this works, visit:
+finetunepartners.com/insights/metafields-in-shopify-without-apps
+{% endcomment %}
+<form action="/admin/bulk" method="get" id="metaedit">
+    <header>
+        <h2>Add or edit metafield</h2>
+        <p>This form lets you add new metafields to pages, products, <abbr title="et cetera">etc</abbr>.</p>
+    </header>
+
+    <fieldset>
+        <legend>Attach metafield to:</legend>
+        <p>
+            <label for="resource_name_article">An article</label>
+            <input type="radio" name="resource_name" value="Article" id="resource_name_article">
+
+            <label for="resource_name_page">A page</label>
+            <input type="radio" name="resource_name" value="Page" id="resource_name_page">
+
+            <label for="resource_name_product">A product</label>
+            <input type="radio" name="resource_name" value="Product" id="resource_name_product" checked>
+
+            <label for="resource_name_collection">A collection</label>
+            <input type="radio" name="resource_name" value="Collection" id="resource_name_collection">
+
+            <label for="resource_name_productvariant">A product variant</label>
+            <input type="radio" name="resource_name" value="ProductVariant" id="resource_name_productvariant">
+        </p>
+    </fieldset>
+
+    <fieldset>
+        <legend>Field labels:</legend>
+        <p>Leave this blank for <code>global</code> (no spaces)</p>
+        <p>
+            <input type="text" id="namespace" placeholder="Namespace for your new metafield" pattern="^\S+$">
+            <label for="namespace">Namespace for your new metafield</label>
+        </p>
+        <div id="new-labels">
+            <fieldset>
+                <legend>New metafield</legend>
+                <p>
+                    <label for="newmeta1">Name your new metafield</label>
+                    <input type="text" id="newmeta1" placeholder="Name your new metafield" pattern="[A-Za-z_-]+" data-js="new-field">
+
+                    <label for="type">Data type</label>
+                    <select id="type1">
+                        <option value="string">String</option>
+                        <option value="money">Money</option>
+                        <option value="boolean">Boolean</option>
+                        <option value="number">Number</option>
+                    </select>
+                </p>
+            </fieldset>
+        </div>
+        <p>Note that metafield names <strong>cannot include any numbers</strong> in their name.</p>
+
+        <p><button type="button" id="add-field" title="Adds a new field into this form, so you can name it">+ Add field</button></p>
+    </fieldset>
+
+    <p>
+        <input type="hidden" name="edit" id="hiddenEdit">
+        <input type="submit" value="Bulk edit metafields" title="Edit these new metafields within Shopify">
+    </p>
+</form>
+
+<section aria-label="View existing metafields">
+    <h2>View existing metafields</h2>
+    <p>This form lets you view (in a <abbr title="JavaScript Object Notation">JSON</abbr> file) what the current metafields look like, in various content types.</p>
+
+    <fieldset>
+        <legend>Pick a content block</legend>
+
+        <p>
+            <label for="pages">Select a page</label>
+            <select id="pages" data-js="auto">
+                <option value="">Select a page</option>
+                {% for linklist in linklists %}
+                    <optgroup label="{{ linklist.title }}">
+                        {% for link in linklist.links %}
+                            {% unless link.object.id == blank %}
+                                <option value="{{ link.object.id }}">{{ link.object.title }}</option>
+                            {% endunless %}
+                        {% endfor %}
+                    </optgroup>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            <label for="products">Select a product</label>
+            <select id="products" data-js="auto">
+                <option value="">Select a product</option>
+                {% for product in collections.all.products %}
+                    {% unless product.id == blank %}
+                        <option value="{{ product.id }}">{{ product.title }}</option>
+                    {% endunless %}
+                {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            <label for="articles">Select an article</label>
+            <select id="articles" data-js="auto">
+                <option value="">Select an article</option>
+                {% comment %}
+                Add in the names of all of your blogs here,
+                for example "news,updates,howto"
+                {% endcomment %}
+                {% assign all_blogs = "news,how-to" | split: "," %}
+                {% for blog_handle in all_blogs %}
+                    {% assign current_blog = blogs[blog_handle] %}
+                    <optgroup label="{{ current_blog.title }} blog">
+                    {% for article in current_blog.articles %}
+                        <option value="{{ article.id }}" data-parentid="{{ current_blog.id }}">{{ article.title }}</option>
+                    {% endfor %}
+                    </optgroup>
+                {% endfor %}
+            </select>
+        </p>
+
+        <p>
+            <label for="articles">Select a collection</label>
+            <select id="collections" data-js="auto">
+                <option value="">Select a collection</option>
+                {%- for collection in collections -%}
+                <option value="{{ collection.id }}">{{ collection.title }}</option>
+                {%- endfor -%}
+            </select>
+        </p>
+
+        <p>
+            <label for="product_variant">Select a product variant</label>
+            <select id="variants" data-js="auto">
+                <option value="">Select a product variant</option>
+                {% for product in collections.all.products %}
+                    {% if product.variants.size > 1 %}
+                        <optgroup label="{{product.title}}">
+                        {% for variant in product.variants %}
+                            <option value="{{ variant.id }}" data-parentid="{{ product.id }}">{{ variant.title }}</option>
+                        {% endfor %}
+                        </optgroup>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </p>
+
+        <p><button type="button" id="view-json">View <abbr>JSON</abbr></button></p>
+    </fieldset>
+
+</form>
+
+<script>
+(function () {
+    // Sometimes it's useful to take a querystring which has been generated by this form and pass it to the
+    // page, so the old datastructure can be prepopulated into the form.
+    var importConfig = {};
+    location.search.substr(1).split('&').forEach(
+        function(item) {
+            importConfig[item.split('=')[0]] = item.split("=")[1];
+        }
+    );
+
+    // Do we have a valid querystring?
+    if (importConfig.resource_name && importConfig.edit) {
+        importConfig.metafields = [];
+        var arrTemp = importConfig.edit.split('%2C');
+        for (var i = 0; i < arrTemp.length; i++) {
+            var data = arrTemp[i].replace('metafields.','').split('%3A');
+            var nameSpace = 'global';
+            var dataType = data[1];
+            var nameSpaces = data[0].split('.');
+            var name = nameSpaces[0];
+            if (nameSpaces.length > 0) {
+                nameSpace = nameSpaces[0];
+                name = nameSpaces[1];
+            }
+            importConfig['nameSpace'] = nameSpace;
+            importConfig.metafields.push({'name': name, 'dataType': dataType});
+        }
+        prePopulate(importConfig);
+    }
+
+    // Prepopulates the form fields, if there's a valid querystring.
+    function prePopulate(importConfig) {
+        if (document.getElementById('resource_name_' + importConfig.resource_name.toLowerCase())) {
+            document.getElementById('resource_name_' + importConfig.resource_name.toLowerCase()).checked = true;
+        }
+        document.getElementById('namespace').value = importConfig.nameSpace;
+        for (var i = 0; i < importConfig.metafields.length; i++) {
+            var metafields = importConfig.metafields[i];
+            if (i > 0) {
+                addField(metafields.name, metafields.dataType);
+            } else { // First pass
+                document.getElementById('newmeta1').value = metafields.name;
+                if (document.getElementById('type1').querySelector('[value="' + metafields.dataType + '"]')) {
+                    document.getElementById('type1').querySelector('[value="' + metafields.dataType + '"]').setAttribute('selected','selected');
+                }
+            }
+        }
+    }
+
+    var addFieldTrigger = document.getElementById('add-field');
+    // Adds a new field into the form
+    addFieldTrigger.addEventListener('click', function() {
+        addField();
+    });
+
+    // Adds an input element and a select box, when the user clicks on "add field"
+    function addField(name,datatype) {
+        var newLabels = document.getElementById('new-labels');
+        if (!name) name = '';
+        var stringSelected = '';
+        var booleanSelected = '';
+        var moneySelected = '';
+        var numberSelected = '';
+        switch (datatype) {
+        case 'string':
+            stringSelected = ' selected';
+            break;
+        case 'money':
+            moneySelected = ' selected';
+            break;
+        case 'boolean':
+            booleanSelected = ' selected';
+            break;
+        case 'number':
+            numberSelected = ' selected';
+            break;
+        }
+        if (newLabels) {
+            var count = document.querySelectorAll('[data-js="new-field"]').length + 1;
+            var fieldMarkup = '<legend>New metafield ' + count + '</legend>' +
+                '<p><label for="newmeta' + count + '">Name your new metafield</label>' +
+                '<input type="text" id="newmeta' + count + '" placeholder="Name your new metafield" pattern="[A-Za-z_-]+" value="' + name + '" data-js="new-field"></p>' +
+                '<p><select id="type' + count + '">' +
+                '<option value="string"' + stringSelected + '>String</option>' +
+                '<option value="money"' + moneySelected + '>Money</option>' +
+                '<option value="boolean"' + booleanSelected + '>Boolean</option>' +
+                '<option value="number"' + numberSelected + '>Number</option>' +
+                '</select><label for="type' + count + '">Data type</label></p>';
+            var newField = document.createElement('fieldset');
+            newField.innerHTML = fieldMarkup;
+            newLabels.appendChild(newField);
+        }
+    }
+
+    var theForm = document.getElementById('metaedit');
+    theForm.onsubmit = buildQuery;
+
+    // Gathers all the input data in the form, formats it, then adds it to the hidden input element
+    function buildQuery() {
+        var hiddenEdit = document.getElementById('hiddenEdit');
+        var newSpace =   document.getElementById('namespace').value;
+        if (newSpace === '') newSpace = 'global';
+        var newFields =  document.querySelectorAll('[data-js="new-field"]');
+        var editString = '';
+        var metaType;
+        // Loop through the input elements
+        for (var i = 0; i < newFields.length; i++) {
+            // Don't include any placeholder values
+            if (newFields[i].value !== '') {
+                metaType = document.getElementById('type' + (i + 1)).value;
+                // Build up the URL
+                if (i !== 0) editString = editString + ',';
+                editString = editString + 'metafields.' + newSpace + '.' + newFields[i].value + ':' + metaType;
+            }
+        }
+        hiddenEdit.value = editString;
+    }
+
+    // Show content JSON, select boxes
+    var btnView = document.getElementById('view-json');
+    btnView.addEventListener('click', function () {
+        // The five select boxes, letting you choose the content
+        var id, selectBoxes = document.querySelectorAll('[data-js="auto"]');
+        for (var i = 0; i < selectBoxes.length; i++) {
+            // Content item ID
+            id = selectBoxes[i].value;
+            // Used for blog articles and product variations
+            parentID = selectBoxes[i].options[selectBoxes[i].selectedIndex].getAttribute('data-parentid');
+            // This will follow the first valid link found, then stop.
+            if (parentID && id !== '') {
+                bounce(id,selectBoxes[i].getAttribute('id'),parentID);
+                break;
+            }
+            else if (id !== '') {
+                bounce(id,selectBoxes[i].getAttribute('id'));
+                break;
+            }
+        }
+    });
+
+    // "Bounces" the user to the correct URL to view their JSON
+    function bounce(id,contentType,parentID) {
+        var URL = '';
+        // shopify.dev/docs/admin-api/rest/reference/metafield
+        switch (contentType) {
+            case 'variants':
+                URL = '/admin/products/' + parentID + '/' + contentType + '/' + id + '/metafields.json';
+                break;
+            case 'articles':
+                URL = '/admin/blogs/' + parentID + '/' + contentType + '/' + id + '/metafields.json';
+                break;
+            default:
+                URL = '/admin/' + contentType + '/' + id + '/metafields.json';
+        }
+        document.location.href = '//' + document.location.hostname + URL;
+    }
+})();
+</script>
+<!-- end metadata snippet -->
