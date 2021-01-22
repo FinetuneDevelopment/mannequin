@@ -19,11 +19,3 @@
 {{ body_font_italic | font_face: font_display: 'swap' }}
 {{ body_font_semi_bold_italic | font_face: font_display: 'swap' }}
 {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
-}
-
-body, input, textarea {
-    font-family: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
-}

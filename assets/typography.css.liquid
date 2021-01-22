@@ -1,13 +1,17 @@
+h1, h2, h3, h4, h5, h6 {
+  font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+}
+
+body, input, textarea {
+  font-family: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+}
+
 body {
   background: {{ settings.color_background }};
   color: {{ settings.color_brand_dark }};
-  font-family: {{ settings.body_font_light.family }}, {{ settings.body_font.fallback_families }};
+  /* Please change */
   margin: 0 auto;
   max-width: 50em;
-}
-
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
-  font-family: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
 }
 
 a {

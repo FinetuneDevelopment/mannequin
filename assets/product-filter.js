@@ -101,35 +101,34 @@
         stockCheck
       ) {
         matchingProductCount++;
-        productsString += '<section class="col-md-4" aria-label="' + product.title + '" itemscope="" itemtype="http://schema.org/Product">' +
-        '<div class="product-display bt-white shadow-light radius-big">' +
-          '<p><img src="' + product.image + '" alt="' + product.imageAlt + '" class="img-fluid" itemprop="image" loading="lazy"></p>' +
-          '<h3 class="h4 heading-bold flush" itemprop="name">' + product.title + '</h3>' +
-          '<div class="product-display__gsmall text-uppercase text-breath">' + product.description + '</div>' +
+        productsString += '<section aria-label="' + product.title + '" itemscope="" itemtype="http://schema.org/Product">' +
+          '<p><img src="' + product.image + '" alt="' + product.imageAlt + '" itemprop="image" loading="lazy"></p>' +
+          '<h3 itemprop="name">' + product.title + '</h3>' +
+          '<p>' + product.description + '</p>' +
           '<div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">';
         if (product.highPrice) {
-          productsString += '<p class="text-uppercase text-breath">Retail: <del itemprop="highPrice">' + product.highPrice + '</del></p>';
+          productsString += '<p>Retail: <del itemprop="highPrice">' + product.highPrice + '</del></p>';
         }
-        productsString += '<p class="h2 type-gotham-medium flush" itemprop="price">' + product.lowPrice + '</p></div>';
+        productsString += '<p itemprop="price">' + product.lowPrice + '</p></div>';
         if (product.saving) {
-          productsString += '<p class="type-source-bold text-uppercase text-breath">Saving ' + product.saving + '</p>';
+          productsString += '<p>Saving ' + product.saving + '</p>';
         }
         if (product.inStock) {
-          productsString += '<p class="d-print-none"><a href="/cart/add?id=' + product.id + '" class="btn btn-primary flush">Order now</a></p>';
+          productsString += '<p><a href="/cart/add?id=' + product.id + '">Order now</a></p>';
         } else {
-          productsString += '<p><strong class="text-error">Sorry - this product is sold out</strong></p>';
+          productsString += '<p><strong>Sorry - this product is sold out</strong></p>';
         }
-        productsString += '<p class="d-print-none"><a href="' + product.url + '" class="btn btn-arrow">More information<span class="sr-only"> about ' + product.title + '</span></a></p></div></section>';
+        productsString += '<p><a href="' + product.url + '">More information about ' + product.title + '</a></p></section>';
       }
     }
     if (productsString === '') {
-      productsString = '<p class="lead text-centre col-12">No products found. Please try widening your search.</p>';
+      productsString = '<p>No products found. Please try widening your search.</p>';
     }
     // We have at least one product and need to add the count to the top of the results.
     else {
       var plural = '';
       if (matchingProductCount > 1) plural = 's';
-      productsString = '<h2 class="col-12 h3 text-center">We have found ' + matchingProductCount + ' product' + plural + '</h2>' + productsString;
+      productsString = '<h2>We have found ' + matchingProductCount + ' product' + plural + '</h2>' + productsString;
     }
     document.querySelector('[data-js="products"]').innerHTML = productsString;
   }
