@@ -45,9 +45,9 @@ finetunepartners.com/insights/metafields-in-shopify-without-apps
 
                     <label for="type">Data type</label>
                     <select id="type1">
+                        <option value="boolean">Boolean</option>
                         <option value="string">String</option>
                         <option value="money">Money</option>
-                        <option value="boolean">Boolean</option>
                         <option value="number">Number</option>
                     </select>
                 </p>
@@ -63,6 +63,8 @@ finetunepartners.com/insights/metafields-in-shopify-without-apps
         <input type="submit" value="Bulk edit metafields" title="Edit these new metafields within Shopify">
     </p>
 </form>
+
+<hr>
 
 <section aria-label="View existing metafields">
     <h2>View existing metafields</h2>
@@ -232,13 +234,14 @@ finetunepartners.com/insights/metafields-in-shopify-without-apps
             var count = document.querySelectorAll('[data-js="new-field"]').length + 1;
             var fieldMarkup = '<legend>New metafield ' + count + '</legend>' +
                 '<p><label for="newmeta' + count + '">Name your new metafield</label>' +
-                '<input type="text" id="newmeta' + count + '" placeholder="Name your new metafield" pattern="[A-Za-z_-]+" value="' + name + '" data-js="new-field"></p>' +
-                '<p><select id="type' + count + '">' +
+                '<input type="text" id="newmeta' + count + '" placeholder="Name your new metafield" pattern="[A-Za-z_-]+" value="' + name + '" data-js="new-field"> ' +
+                '<label for="type' + count + '">Data type</label> ' +
+                '<select id="type' + count + '">' +
+                '<option value="boolean"' + booleanSelected + '>Boolean</option>' +
                 '<option value="string"' + stringSelected + '>String</option>' +
                 '<option value="money"' + moneySelected + '>Money</option>' +
-                '<option value="boolean"' + booleanSelected + '>Boolean</option>' +
                 '<option value="number"' + numberSelected + '>Number</option>' +
-                '</select><label for="type' + count + '">Data type</label></p>';
+                '</select></p>';
             var newField = document.createElement('fieldset');
             newField.innerHTML = fieldMarkup;
             newLabels.appendChild(newField);

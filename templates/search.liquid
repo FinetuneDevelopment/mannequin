@@ -41,7 +41,7 @@
     </form>
   </section>
 
-  {% if search.performed %}
+  {% if search.performed and search.results_count > 0 %}
     <section aria-label="Search results for {{ search.terms | escape }}">
       <h2>Search results for <q>{{ search.terms | escape }}</q>:</h2>
       {% for item in search.results %}
@@ -54,6 +54,7 @@
           {% endif %}
         </section>
       </a>
+      {% endfor %}
     </section>
   {% else %}
     <section aria-label="No results for {{ search.terms | escape }}, I'm afraid">
