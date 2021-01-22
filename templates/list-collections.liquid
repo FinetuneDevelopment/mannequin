@@ -1,17 +1,66 @@
+<!-- start {{ template }} -->
+{% comment %}
+This template is used on the /collections/ page and lists out every collection
+in the shop, plus every product within that collection.
+{% endcomment %}
+
+<form action="/search" method="get" role="search">
+  <p>Search for a product:</p>
+  <fieldset>
+    <legend>Display:</legend>
+    <p>
+      <label for="all-products">All products</label>
+      <input type="radio" name="options[unavailable_products]" value="show" id="all-products">
+      <label for="available-products">Only products in stock</label>
+      <input type="radio" name="options[unavailable_products]" value="hide" id="available-products" checked>
+    </p>
+  </fieldset>
+  <p>
+    <label for="search-field-page">Search</label>
+    <input type="search" name="q" id="search-field-page" placeholder="Search" role="search">
+    <input type="submit" value="Search">
+  </p>
+</form>
+
 {% for collection in collections %}
   {% unless collection.handle == 'frontpage' %}
     {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
-    <a href="{{ collection.url }}">More {{ collection_title }} &rsaquo;</a>
-    {% for product in collection.products limit:5 %}
-      {% assign grid_item_width = 'large--one-fifth medium--one-half' %}
-      <div>
-        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-        {{ product.price | money }}
-        {% unless product.available %}<br><strong>sold out</strong>{% endunless %}
-        <a href="{{ product.url | within: collection }}">
-          <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-        </a>
-      </div>
-    {% endfor %}
+      <section aria-label="{{ collection_title }}" itemscope itemtype="https://schema.org/ProductCollection">
+        <h2 itemprop="name">{{ collection_title }}</h2>
+        <p itemprop="description">{{ collection.description | strip_html }}</p>
+        <p><a href="{{ collection.url }}" itemprop="url">More {{ collection_title }} &rsaquo;</a></p>
+
+        {% for product in collection.products limit:5 %}
+          <section aria-label="{{ product.title }}" itemscope="" itemtype="http://schema.org/Product">
+            <h3>
+              <span itemprop="name">{{ product.title }}</span>
+              {% unless product.vendor == "" %}
+              from <span itemprop="brand">
+                <span itemprop="name">{{ product.vendor }}</span>
+                {% if product.type.size > 0 %}<meta itemprop="type" content="{{ product.type }}">{% endif %}
+              </span>
+              {% endunless %}
+            </h3>
+            <p itemprop="description">{{ product.description | strip_html | strip_newlines | truncate: 50 }}</p>
+            <p><a href="{{ product.url | within: collection }}" itemprop="url">Learn more about {{ product.title }}</a></p>
+
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+              <p><span itemprop="priceCurrency">{{ cart.currency.symbol }}</span><span itemprop="price">{{ product.price | money_without_currency }}</span></p>
+              {% if product.available %}
+                <link itemprop="availability" href="https://schema.org/InStock">
+              {% else %}
+                <link itemprop="availability" href="https://schema.org/OutOfStock">
+              {% endif %}
+            </div>
+
+            {% unless product.available %}<p><strong>Sold out</strong></p>{% endunless %}
+            <p><a href="{{ product.url | within: collection }}">
+              <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" itemprop="image">
+            </a></p>
+          </section>
+        {% endfor %}
+
+      </section>
   {% endunless %}
 {% endfor %}
+<!-- end {{ template }} -->

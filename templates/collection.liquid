@@ -170,7 +170,7 @@
       <section aria-label="{{ product.title }}" itemscope="" itemtype="http://schema.org/Product">
         <p><img src="{{ product.featured_image.src | img_url: '500x500', crop: 'center' }}" alt="{{ product.featured_image.alt | escape }}" itemprop="image" loading="lazy"></p>
         <h3 itemprop="name">{{ product.title }}</h3>
-        {{ product.description }}
+        <p itemprop="description">{{ product.description }}</p>
         <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
           {% unless product.compare_at_price_max == 0 %}
           <p>Retail: <del itemprop="highPrice">{{ product.compare_at_price_max | money }}</del></p>

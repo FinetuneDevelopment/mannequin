@@ -1,3 +1,4 @@
+<!-- start {{ template }} -->
 {% paginate collection.products by 2 %}
   <h1>{{ collection.title }}</h1>
   {% for product in collection.products %}
@@ -14,4 +15,4 @@
   {% endfor %}
   {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
 {% endpaginate %}
-
+<!-- end {{ template }} -->

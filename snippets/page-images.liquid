@@ -1,0 +1,18 @@
+{% comment %}
+This snippet allows you to have two (or more) unique images per page, which can be changed
+through the Shopify interface. Full writeup:
+finetunepartners.com/insights/page-specific-images-in-shopify
+{% endcomment %}
+{% if handle != blank %}
+  {% capture page-img %}{{ handle }}.jpg{% endcapture %}
+{% else %}
+  {% capture page-img %}og-home.jpg{% endcapture %}
+{% endif %}
+<p>
+  <img src="{{ page-img | file_img_url: '500x500', crop: 'center' }}" alt="" onerror="this.style.display = 'none';">
+</p>
+{% unless page.metafields.global.image == blank %}
+<p>
+  <img src="{{ page.metafields.global.image | file_img_url: '300x250', crop: 'center' }}" alt="">
+</p>
+{% endunless %}

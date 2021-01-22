@@ -1,22 +1,116 @@
+<!-- start {{ template }} -->
 {% paginate search.results by 10 %}
-  <form action="/search" method="get" role="search">
-    <input type="search" name="q" value="{{ search.terms | escape }}">
-    <button type="submit">search</button>
-  </form>
+
+  <section aria-label="Search{% if search.performed %} Results{% endif %}">
+    <form action="/search" method="get" role="search">
+      <h1>Search{% if search.performed %} Results{% endif %}</h1>
+      {% if search.performed %}
+      <p>Search again:</p>
+      {% endif %}
+      <p>
+        <label for="search-field-page">Search site</label>
+        <input type="search" name="q" id="search-field-page" placeholder="Search site" role="search" value="{{ search.terms | escape }}">
+        <input type="submit" value="Search">
+      </p>
+      <fieldset>
+        <legend>Display:</legend>
+        <p>
+          <input type="radio" name="options[unavailable_products]" value="show" id="all-products" checked>
+          <label for="all-products">All products</label>
+
+          <input type="radio" name="options[unavailable_products]" value="hide" id="available-products">
+          <label for="available-products">Products in stock</label>
+        </p>
+      </fieldset>
+      <fieldset>
+        <legend>Search:</legend>
+        <p>
+          <input type="radio" name="type" value="all" id="type-all" checked>
+          <label for="type-all">Everywhere</label>
+
+          <input type="radio" name="type" value="product" id="type-product">
+          <label for="type-product">Products</label>
+
+          <input type="radio" name="type" value="article" id="type-article">
+          <label for="type-article">Articles</label>
+
+          <input type="radio" name="type" value="page" id="type-page">
+          <label for="type-page">Pages</label>
+        </p>
+      </fieldset>
+    </form>
+  </section>
 
   {% if search.performed %}
-    {% for item in search.results %}
-      {% if item.featured_image %}
-        <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
-          {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt }}
-        </a>
-      {% endif %}
-      <h5>{{ item.title | link_to: item.url }}</h5>
-      <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
-    {% else %}
-      no results
-    {% endfor %}
+    <section aria-label="Search results for {{ search.terms | escape }}">
+      <h2>Search results for <q>{{ search.terms | escape }}</q>:</h2>
+      {% for item in search.results %}
+      <a href="{{ item.url | within: collection }}">
+        <section aria-label="{{ item.title }}">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+          {% if item.featured_image %}
+            <p><img src="{{ item.featured_image.src | img_url: '130x130', crop: 'center' }}" alt="{{ item.title }}"></p>
+          {% endif %}
+        </section>
+      </a>
+    </section>
+  {% else %}
+    <section aria-label="No results for {{ search.terms | escape }}, I'm afraid">
+      <h2>No results for <q>{{ search.terms | escape }}</q>, I'm afraid</h2>
+      <p>Have you seen our collections?</p>
+      {% for collection in collections %}
+        <section aria-label="{{ collection.title }}">
+          {% if collection.image %}
+            {% assign collection_image = collection.image %}
+          {% elsif collection.products.first and collection.products.first.images != empty %}
+            {% assign collection_image = collection.products.first.featured_image %}
+          {% else %}
+            {% assign collection_image = blank %}
+          {% endif %}
+
+          <a href="{{ collection.url }}">
+            <h3>{{ collection.title }}</h3>
+            <p><img src="{{ collection_image | img_url: '60x60', crop: 'center' }}" alt="{{ collection.title }}"></p>
+          </a>
+        </section>
+      {% endfor %}
   {% endif %}
 
-  {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
+  {% if paginate.pages > 1 %}
+    {% assign paginate = paginate %}
+    <p>{% render 'pagination', paginate: paginate %}</p>
+  {% endif %}
 {% endpaginate %}
+
+{% comment %}
+Unfortunately, the search liquid object doesn't return the value of "type" or "options[unavailable_products]"
+so we'll need to pinch them from the querystring with JavaScript, in order to configure the advanced search
+options accurately.
+{% endcomment %}
+<script>
+(function () {
+  // All the querystring
+  var searchParams = {};
+  location.search.substr(1).split("&").forEach(
+      function(item) {
+          searchParams[item.split("=")[0]] = item.split("=")[1];
+      }
+  );
+  var keys   = Object.keys(searchParams);
+  var values = Object.values(searchParams);
+  for (i = 0; i < keys.length; i++) {
+    // Matching what's in the querystring to what's in the DOM
+    var inputs = document.querySelectorAll('[name="' + decodeURI(keys[i]) + '"]');
+    for (j = 0; j < inputs.length; j++) {
+      var control = inputs[j];
+      // Narrowing this down to just the matching checkboxes and radio buttons
+      if (control.getAttribute('type') === 'radio' || control.getAttribute('type') === 'checkbox') {
+        control.checked = (values[i] === control.value) ? true : false;
+      }
+    }
+  }
+})();
+</script>
+
+<!-- end {{ template }} -->
