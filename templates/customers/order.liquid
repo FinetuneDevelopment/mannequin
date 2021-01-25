@@ -1,1 +1,96 @@
-<!-- /templates/customers/order.liquid -->
+<!-- start {{ template }} -->
+<nav aria-label="Hello{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}">
+    <h2>Hello{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}</h2>
+    <ul>
+        <li><strong><a href="{{ routes.account_url }}">My account</a></strong></li>
+        <li><a href="{{ routes.account_addresses_url }}">Manage addresses</a></li>
+        <li><a href="{{ routes.account_logout_url }}">Log out</a></li>
+    </ul>
+</nav>
+
+<section aria-label="Order number {{ order.order_number }}">
+  <h1>Order number {{ order.order_number }}</h1>
+
+  <p>Order date: <strong>{{ order.created_at | date: format: 'date' }}</strong></p>
+  <p><a href="{{ order.order_status_url }}">Order status page</a></p>
+
+  <hr>
+
+  <section aria-label="Billing Address">
+    <h2>Billing Address</h2>
+    <p>Payment Status: <strong>{{ order.financial_status }}</strong></p>
+    <p>
+    {% if order.billing_address.name != blank %}
+        {{ order.billing_address.name }}<br>
+    {% endif %}
+    {% if order.billing_address.company != blank %}
+        {{ order.billing_address.company }}<br>
+    {% endif %}
+    {% if order.billing_address.street != blank %}
+        {{ order.billing_address.street }}<br>
+    {% endif %}
+    {% if order.billing_address.city != blank %}
+        {{ order.billing_address.city }}, {{ order.billing_address.province }}<br>
+    {% endif %}
+    {% if order.billing_address.country != blank %}
+        {{ order.billing_address.country }} {{ order.billing_address.zip }}<br>
+    {% endif %}
+    {{ order.billing_address.phone }}
+    </p>
+  </section>
+
+  <hr>
+
+  <section aria-label="Shipping Address">
+    <h2>Shipping Address</h2>
+    <p>Fulfillment Status: <strong>{{ order.fulfillment_status }}</strong></p>
+    <p>
+    {% if order.shipping_address.name != blank %}
+        {{ order.shipping_address.name }}<br>
+    {% endif %}
+    {% if order.shipping_address.company != blank %}
+        {{ order.shipping_address.company }}<br>
+    {% endif %}
+    {% if order.shipping_address.street != blank %}
+        {{ order.shipping_address.street }}<br>
+    {% endif %}
+    {% if order.shipping_address.city != blank %}
+        {{ order.shipping_address.city }}, {{ order.shipping_address.province }}<br>
+    {% endif %}
+    {% if order.shipping_address.country != blank %}
+        {{ order.shipping_address.country }} {{ order.shipping_address.zip }}<br>
+    {% endif %}
+    {{ order.shipping_address.phone }}
+    </p>
+  </section>
+
+  <hr>
+
+  {% for line_item in order.line_items %}
+    <section aria-label="Item name">
+      <h3>Item name</h3>
+      <p>{{ line_item.title | link_to: line_item.product.url }}</p>
+    </section>
+    <section aria-label="Price">
+      <h3>Price</h3>
+      <p>{{ line_item.original_price | money }}</p>
+    </section>
+    <section aria-label="Quantity">
+      <h3>Quantity</h3>
+      <p>{{ line_item.quantity }}</p>
+    </section>
+    <section aria-label="Subtotal">
+      <h3>Subtotal</h3>
+      <p>{{ line_item.line_price | money }}</p>
+    </section>
+  {% endfor %}
+
+  <footer aria-label="Total">
+    <h3>Total</h3>
+    <p>{{ order.total_price | money }}</p>
+  </footer>
+
+  <hr>
+
+</section>
+<!-- end {{ template }} -->
