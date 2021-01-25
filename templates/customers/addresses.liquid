@@ -98,6 +98,10 @@
         <input type="tel" name="address[phone]" id="phone{{ forloop.index }}" value="{{ address.phone }}" placeholder="Phone Number">
       </p>
       <p>
+        {{ form.set_as_default_checkbox }}
+        <label for="address_default_address_{{ form.id }}">Set address as default</label>
+      </p>
+      <p>
         <input type="submit" value="Update address {{ forloop.index }}">
       </p>
     {% endform %}
@@ -158,6 +162,10 @@
     <p>
       <label for="phone-new">Phone Number</label>
       <input type="tel" name="address[phone]" id="phone-new" placeholder="Phone Number">
+    </p>
+    <p>
+      {{ form.set_as_default_checkbox }}
+      <label for="address_default_address_new">Set address as default</label>
     </p>
     <p>
       <input type="submit" value="Add address">

@@ -45,15 +45,7 @@
     {% assign this_address = this_order.customer.addresses[0] %}
     <h2>Address book</h2>
     <h3>Default address</h3>
-    <p>{{ this_order.customer.name }}<br>
-      {{ this_address.address1 }}
-      {{ this_address.address2 }}
-      {{ this_address.city }}
-      {{ this_address.company }}
-      {{ this_address.country }}
-      {{ this_address.province }}
-      {{ this_address.zip }}
-    </p>
+    <p>{{ customer.default_address | format_address }}</p>
     <p><a href="{{ routes.account_addresses_url }}">View all addresses ({{ customer.addresses.size }})</a></p>
   </section>
 
