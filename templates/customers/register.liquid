@@ -1,1 +1,32 @@
-<!-- /templates/customers/register.liquid -->
+<!-- start {{ template }} -->
+{% comment %} Note that the "form" liquid object comes back with null data, if a user has completed this form
+but one field is invalid. The if statements (e.g. if form.first_name) have been left in, in case this
+functionality is reinstated in the future. {% endcomment %}
+{% form 'create_customer' %}
+  <h1>Register a new account</h1>
+  <p>Please fill in this form to register a new account.</p>
+  {{ form.errors | default_errors }}
+
+  <p>
+    <label for="forename">First name</label>
+    <input type="text" name="customer[first_name]" size="30" id="forename" placeholder="First name" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} required>
+  </p>
+
+  <p>
+    <label for="surname">Last name</label>
+    <input type="text" name="customer[last_name]" size="30" id="surname" placeholder="Last name" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} required>
+  </p>
+
+  <p{% if form.errors contains 'email' %} class="error"{% endif %}>
+    <label for="email">Email address</label>
+    <input type="email" name="customer[email]" size="30" id="email" placeholder="Email address" required>
+  </p>
+
+  <p{% if form.errors contains 'password' %} class="error"{% endif %}>
+    <label for="password">Password</label>
+    <input type="password" name="customer[password]" id="password">
+  </p>
+
+  <p><input type="submit" value="Join"></p>
+{% endform %}
+<!-- end {{ template }} -->
