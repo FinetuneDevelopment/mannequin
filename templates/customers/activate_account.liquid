@@ -1,1 +1,23 @@
-<!-- /templates/customers/activate_account.liquid -->
+<!-- start {{ template }} -->
+{% form 'activate_customer_password' %}
+  <h1>Please enter your password</h1>
+  <p>If you've not chosen a password yet, don't use one you use on another website.</p>
+  <p>If you're struggling for ideas, why not open a book at random and use a phrase you find?</p>
+  {{ form.errors | default_errors }}
+
+  <p>
+    <label for="password">Password</label>
+    <input type="password" name="customer[password]" id="password">
+  </p>
+
+  <p>
+    <label for="password-confirm">Confirm password</label>
+    <input type="password" name="customer[password_confirmation]" id="password-confirm">
+  </p>
+
+  <p>
+    <input type="submit" name="decline" value="Cancel">
+    <input type="submit" value="Activate">
+  </p>
+{% endform %}
+<!-- end {{ template }} -->
