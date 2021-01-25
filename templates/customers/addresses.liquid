@@ -1,1 +1,234 @@
-<!-- /templates/customers/addresses.liquid -->
+<!-- start {{ template }} -->
+<nav aria-label="Hello{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}">
+  <h2>Hello{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}</h2>
+  <ul>
+    <li><a href="{{ routes.account_url }}">My account</a></li>
+    <li><strong title="You are here">Manage addresses</strong></li>
+    <li><a href="{{ routes.account_logout_url }}">Log out</a></li>
+  </ul>
+</nav>
+
+<section aria-label="My addresses">
+  <h1>My addresses</h1>
+
+  <hr>
+
+  {% for address in customer.addresses %}
+    <section aria-label="Address {{ forloop.index }}">
+      <h2>Address {{ forloop.index }}</h2>
+      <p>
+        {{ address.first_name }} {{ address.last_name }}
+        {% if address.first_name != blank or address.last_name != blank %}<br>{% endif %}
+        {% if address.company != blank %}
+            {{ address.company }}<br>
+        {% endif %}
+        {% if address.address1 != blank %}
+            {{ address.address1 }}<br>
+        {% endif %}
+        {% if address.address2 != blank %}
+            {{ address.address2 }}<br>
+        {% endif %}
+        {% if address.city != blank %}
+            {{ address.city }}<br>
+        {% endif %}
+        {% if address.country != blank %}
+            {{ address.country }}<br>
+        {% endif %}
+        {% if address.province != blank %}
+            {{ address.province }}<br>
+        {% endif %}
+        {% if address.zip != blank %}
+            {{ address.zip }}<br>
+        {% endif %}
+        {{ address.phone }}
+      </p>
+      <footer>
+        <p>
+          <a href="#edit-address-{{ forloop.index }}">Edit address {{ forloop.index }}</a>
+        </p>
+      </footer>
+    </section>
+
+    <hr>
+
+    {% form 'customer_address', address %}
+      <h3 id="edit-address-{{ forloop.index }}">Edit address {{ forloop.index }}</h3>
+      <p>
+        <label for="forname{{ forloop.index }}">First name</label>
+        <input type="text" name="address[first_name]" id="forname{{ forloop.index }}" value="{{ address.first_name }}" placeholder="First name">
+      </p>
+      <p>
+        <label for="surname{{ forloop.index }}">Last name</label>
+        <input type="text" name="address[last_name]" id="surname{{ forloop.index }}" value="{{ address.last_name }}" placeholder="Last name">
+      </p>
+      <p>
+        <label for="company{{ forloop.index }}">Company</label>
+        <input type="text" name="address[company]" id="company{{ forloop.index }}" value="{{ address.company }}" placeholder="Company">
+      </p>
+      <p>
+        <label for="address1-{{ forloop.index }}">Address 1</label>
+        <input type="text" name="address[address1]" id="address1-{{ forloop.index }}" value="{{ address.address1 }}" placeholder="Address 1">
+      </p>
+      <p>
+        <label for="address2-{{ forloop.index }}">Address 2</label>
+        <input type="text" name="address[address2]" id="address1-{{ forloop.index }}" value="{{ address.address2 }}" placeholder="Address 2">
+      </p>
+      <p>
+        <label for="city{{ forloop.index }}">City</label>
+        <input type="text" name="address[city]" id="city{{ forloop.index }}" value="{{ address.city }}" placeholder="City">
+      </p>
+      <p>
+        <label for="country{{ forloop.index }}">Country</label>
+        <select name="address[country]" id="country{{ forloop.index }}" data-province="province{{ forloop.index }}">
+          {{ country_option_tags }}
+        </select>
+      </p>
+      <p>
+        <label for="province{{ forloop.index }}">Province</label>
+        <select name="address[province]" id="province{{ forloop.index }}" disabled>
+          <option value="">Please select a country first</option>
+        </select>
+      </p>
+      <p>
+        <label for="postcode{{ forloop.index }}">ZIP/Postal Code</label>
+        <input type="text" name="address[zip]" id="postcode{{ forloop.index }}" value="{{ address.zip }}" placeholder="ZIP/Postal Code">
+      </p>
+      <p>
+        <label for="phone{{ forloop.index }}">Phone Number</label>
+        <input type="tel" name="address[phone]" id="phone{{ forloop.index }}" value="{{ address.phone }}" placeholder="Phone Number">
+      </p>
+      <p>
+        <input type="submit" value="Update address {{ forloop.index }}">
+      </p>
+    {% endform %}
+
+    <form method="post" action="/account/addresses/{{ address.id }}">
+      <p>
+        <input type="hidden" name="_method" value="delete">
+        <button >Delete address {{ forloop.index }}</button>
+      </p>
+    </form>
+
+    <hr>
+
+  {% endfor %}
+
+  {% form 'customer_address', customer.new_address %}
+    <h2>Add new address</h2>
+    <p>
+      <label for="forname-new">First name</label>
+      <input type="text" name="address[first_name]" id="forname-new" placeholder="First name">
+    </p>
+    <p>
+      <label for="surname-new">Last name</label>
+      <input type="text" name="address[last_name]" id="surname-new" placeholder="Last name">
+    </p>
+    <p>
+      <label for="company-new">Company</label>
+      <input type="text" name="address[company]" id="company-new" placeholder="Company">
+    </p>
+    <p>
+      <label for="address1--new">Address 1</label>
+      <input type="text" name="address[address1]" id="address1--new" placeholder="Address 1">
+    </p>
+    <p>
+      <label for="address2--new">Address 2</label>
+      <input type="text" name="address[address2]" id="address1--new" placeholder="Address 2">
+    </p>
+    <p>
+      <label for="city-new">City</label>
+      <input type="text" name="address[city]" id="city-new" placeholder="City">
+    </p>
+    <p>
+      <label for="country-new">Country</label>
+      <select name="address[country]" id="country-new" data-province="province-new">
+        {{ country_option_tags }}
+      </select>
+    </p>
+    <p>
+      <label for="province-new">Province</label>
+      <select name="address[province]" id="province-new" disabled>
+        <option value="">Please select a country first</option>
+      </select>
+    </p>
+    <p>
+      <label for="postcode-new">ZIP/Postal Code</label>
+      <input type="text" name="address[zip]" id="postcode-new" placeholder="ZIP/Postal Code">
+    </p>
+    <p>
+      <label for="phone-new">Phone Number</label>
+      <input type="tel" name="address[phone]" id="phone-new" placeholder="Phone Number">
+    </p>
+    <p>
+      <input type="submit" value="Add address">
+    </p>
+  {% endform %}
+
+</section>
+
+<script>
+(function () {
+
+  function selectorSetup() {
+    // Listening to changes to any element with a "data-province" attribute
+    document.addEventListener('change', function(e) {
+      var countrySelect = e.target;
+      if (countrySelect.getAttribute('data-province')) {
+        updateProvince(countrySelect);
+      }
+    }, false);
+
+    var countrySelecters = document.querySelectorAll('[name="address[country]"]');
+    if (countrySelecters.length > 0) {
+      // Arrays of the values for current country and province settings, when the page first loads
+      var selectedCountry = [{% for address in customer.addresses %}'{{ address.country }}'{% if forloop.last != true %},{% endif %}{% endfor %}];
+      var selectedProvince = [{% for address in customer.addresses %}'{{ address.province }}'{% if forloop.last != true %},{% endif %}{% endfor %}];
+      // Looping through all of the country select tags
+      for (var i = 0; i < countrySelecters.length; i++) {
+        var countrySelect = countrySelecters[i];
+        var provinceSelect = document.getElementById(countrySelect.getAttribute('data-province'));
+        if (provinceSelect) {
+          // Setting up the select boxes with the correct current data
+          preSelect(countrySelect,selectedCountry[i]);
+          updateProvince(countrySelect);
+          preSelect(provinceSelect,selectedProvince[i]);
+        }
+      }
+    }
+  }
+  selectorSetup();
+
+  // Updates the province select box, if required
+  function updateProvince(countrySelect) {
+    var provinceObj = JSON.parse(countrySelect.options[countrySelect.selectedIndex].dataset.provinces);
+    var provinceSelect = document.getElementById(countrySelect.getAttribute('data-province'));
+    // Does the chosen country have provinces?
+    if (provinceSelect && provinceObj.length > 0) {
+      var options = '';
+      for (var i = 0; i < provinceObj.length; i++) {
+        options = options + '<option value="' + provinceObj[i][0] +'">' + provinceObj[i][1] + '</option>\n';
+      }
+      provinceSelect.removeAttribute('disabled');
+      provinceSelect.innerHTML = options;
+    } else {
+      provinceSelect.setAttribute('disabled','disabled');
+      provinceSelect.innerHTML = '<option value="">No provinces for the current country</option>';
+    }
+  }
+
+  // This is passed a select box and a value. It attempts to find the value within the select box, then change that option tag to "selected".
+  function preSelect(obj,value) {
+    if (obj && value !== '') {
+      for (var i = 0; i < obj.length; i++) {
+        var option = obj[i];
+        if (option.text === value) {
+          option.setAttribute('selected','selected');
+        } else {
+          option.removeAttribute('selected');
+        }
+      }
+    }
+  }
+})();
+</script>
+<!-- end {{ template }} -->
