@@ -1,1 +1,38 @@
-<!-- /templates/customers/login.liquid -->
+<!-- start {{ template }} -->
+<section aria-label="{% if canonical_url contains "invalid_token" %}Activate account{% else %}Login{% endif%}">
+  {% form 'customer_login'%}
+    {% if canonical_url contains "invalid_token" %}
+      <h1>Activate account</h1>
+      <p>Sorry, this link is no longer valid. Would you like to <a href="{{ routes.account_register_url }}">register a new account with us</a>?</p>
+    {% else %}
+      <h1>Login</h1>
+      {{ form.errors | default_errors }}
+
+      <p>
+          <label for="email">Email address</label>
+          <input type="email" name="customer[email]" size="30" id="email" placeholder="Email address" required>
+      </p>
+      <p>
+          <label for="password">Password</label>
+          <input type="password" name="customer[password]" id="password">
+      </p>
+
+      <p>
+        <a href="#forgotten-password">Forgotten password?</a>
+        <input type="submit" value="Login">
+      </p>
+
+    {% endif %}
+  {% endform %}
+
+  {% form 'recover_customer_password', id: 'forgotten-password' %}
+    {{ form.errors | default_errors }}
+
+    <p>
+        <label for="reset-email">Email address</label>
+        <input type="email" name="email" size="30" id="reset-email" placeholder="Email address" required>
+    </p>
+    <p><input type="submit" value="Reset password"></p>
+  {% endform %}
+</section>
+<!-- end {{ template }} -->

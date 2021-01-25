@@ -1,1 +1,90 @@
-<!-- /templates/customers/account.liquid -->
+<!-- start {{ template }} -->
+<nav aria-label="Hello{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}">
+    <h2>Hello{% if customer.first_name != blank %}, {{ customer.first_name }}{% endif %}</h2>
+    <ul>
+        <li><strong title="You are here">My account</strong></li>
+        <li><a href="{{ routes.account_addresses_url }}">Manage addresses</a></li>
+        <li>
+            <a href="{{ routes.account_logout_url }}">Log out</a>
+        </li>
+    </ul>
+</nav>
+
+<section aria-label="My account">
+  <h1>My account</h1>
+
+  <section aria-label="Recent Order">
+    <h2>Recent Order</h2>
+    {% if customer.orders.size > 0 %}
+      {% assign this_order = customer.orders[0] %}
+      <section aria-label="Order number">
+          <h3>Order <abbr title="number">no</abbr>.</h3>
+          <p>#{{ this_order.order_number }}</p>
+      </section>
+      <section aria-label="Shipping status">
+          <h3>Shipping status</h3>
+          <p>{{ this_order.fulfillment_status | capitalize }}</p>
+      </section>
+      <section aria-label="Date">
+          <h3>Date</h3>
+          <p>{{ this_order.created_at | date: format: 'date' }}</p>
+      </section>
+      <section aria-label="Total">
+          <h3>Total</h3>
+          <p>{{ this_order.total_net_amount | money_with_currency }}</p>
+      </section>
+      <footer>
+        <p><a href="#all-orders">View all orders</a></p>
+      </footer>
+    {% else %}
+      <p>You have yet to order a product from us.</p>
+    {% endif %}
+  </section>
+
+  <section aria-label="Address book">
+    {% assign this_address = this_order.customer.addresses[0] %}
+    <h2>Address book</h2>
+    <h3>Default address</h3>
+    <p>{{ this_order.customer.name }}<br>
+      {{ this_address.address1 }}
+      {{ this_address.address2 }}
+      {{ this_address.city }}
+      {{ this_address.company }}
+      {{ this_address.country }}
+      {{ this_address.province }}
+      {{ this_address.zip }}
+    </p>
+    <p><a href="{{ routes.account_addresses_url }}">View all addresses ({{ customer.addresses.size }})</a></p>
+  </section>
+
+  <section aria-label="Orders" id="all-orders">
+    <h2>Orders</h2>
+
+    {% for order in customer.orders %}
+      <section aria-label="Order number">
+        <h3>Order <abbr title="number">no</abbr>.</h3>
+        <p>#{{ order.order_number }}</p>
+      </section>
+      <section aria-label="Shipping status">
+        <h3>Shipping status</h3>
+        <p>{{ order.fulfillment_status | capitalize }}</p>
+      </section>
+      <section aria-label="Date">
+        <h3>Date</h3>
+        <p>{{ order.created_at | date: format: 'date' }}</p>
+      </section>
+      <section aria-label="Total">
+        <h3>Total</h3>
+        <p>{{ order.total_net_amount | money_with_currency }}</p>
+      </section>
+      <p>
+        <a href="{{ order.customer_url }}">
+          More <abbr title="information">info</abbr> about order number {{ order.order_number }}
+        </a>
+      </p>
+      <hr>
+    {% endfor %}
+  </section>
+
+</section>
+<!-- end {{ template }} -->
