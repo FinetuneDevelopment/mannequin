@@ -25,6 +25,8 @@
     {% endif %}
   {% endform %}
 
+  <hr>
+
   {% form 'recover_customer_password', id: 'forgotten-password' %}
     {{ form.errors | default_errors }}
 
