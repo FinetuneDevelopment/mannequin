@@ -248,5 +248,5 @@ var objProducts = [ {% comment %} Generating the custom JSON {% endcomment %}
   {% endfor %}
 ];
 </script>
-{{ 'product-filter.js' | asset_url | script_tag }}
+<script src="{{ 'product-filter.js' | asset_url }}"></script>
 <!-- end {{ template }} -->
