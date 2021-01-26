@@ -45,7 +45,6 @@
   </main>
 
   {% render 'footer' %}
-
-  {{ 'application.js' | asset_url | script_tag }}
+  <script src="{{ 'application.js' | asset_url }}"></script>
 </body>
 </html>
