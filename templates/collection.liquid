@@ -1,3 +1,4 @@
+<!-- start {{ template }} -->
 <h1>{{ collection.title }}</h1>
 
 {% comment %} Product filters {% endcomment %}
@@ -248,3 +249,4 @@ var objProducts = [ {% comment %} Generating the custom JSON {% endcomment %}
 ];
 </script>
 {{ 'product-filter.js' | asset_url | script_tag }}
+<!-- end {{ template }} -->
