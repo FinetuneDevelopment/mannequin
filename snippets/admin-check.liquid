@@ -1,4 +1,4 @@
-{% comment %} Links, allowing editors to change the metafield data {% endcomment %}
+{% comment %} Outputs the string "true" if the current page is being served to a user who is logged into Shopify {% endcomment %}
 {% capture CFH %}{{ content_for_header }}{% endcapture %}
 {% if CFH contains 'admin_bar_iframe' %}
   {% assign admin = true %}
