@@ -1,0 +1,21 @@
+<!-- start snippet og-image -->
+{% if product.featured_image != blank or article.image != blank %}
+  {% if product.featured_image != blank %}
+    {% assign og-img = product.featured_image %}
+  {% else %}
+    {% assign og-img = article.image %}
+  {% endif %}
+  <meta property="og:image" content="{{ og-img | img_url: '1200x630', crop: 'center' }}">
+  <meta itemprop="image" content="{{ og-img | img_url: '1200x630', crop: 'center' }}">
+  <link rel="image_src" href="{{ og-img | img_url: '1200x630', crop: 'center' }}">
+{% else %}
+  {% if handle != blank %}
+    {% capture page-img %}{{ handle }}.jpg{% endcapture %}
+  {% else %}
+    {% capture page-img %}og-home.jpg{% endcapture %}
+  {% endif %}
+  <meta property="og:image" content="{{ page-img | file_img_url: '1200x630', crop: 'center' }}">
+  <meta itemprop="image" content="{{ page-img | file_img_url: '1200x630', crop: 'center' }}">
+  <link rel="image_src" href="{{ page-img | file_img_url: '1200x630', crop: 'center' }}">
+{% endif %}
+<!-- end snippet og-image -->
