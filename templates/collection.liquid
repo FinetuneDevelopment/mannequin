@@ -1,6 +1,14 @@
 <!-- start {{ template }} -->
+{% assign product_limit = 29 %}
+{% if collection.products.size > product_limit %}
+{% assign oversize = true %}
+{% else %}
+{% assign oversize = false %}
+{% endif %}
+
 <h1>{{ collection.title }}</h1>
 
+{% if oversize == false %}
 {% comment %} Product filters {% endcomment %}
 <form data-js="filter" action="#" method="get">
   <h2>Filter products</h2>
@@ -149,10 +157,11 @@
 
   <p><input type="reset" value="Clear all filters"></p>
 </form>
+{% endif %}
 
 {% comment %} Links to enable Shopify editors to change the metafield data {% endcomment %}
 {% capture admin %}{% render 'admin-check' %}{% endcapture %}
-{% if admin %}
+{% if admin == 'true' %}
   <h3>Edit metafield data</h3>
   <ul>
     <li><a href="/admin/bulk?resource_name=Product&edit=metafields.SuitableFor.Vegetarians%3Aboolean%2Cmetafields.SuitableFor.Vegans%3Aboolean%2Cmetafields.SuitableFor.Children%3Aboolean%2Cmetafields.SuitableFor.NutAllergy%3Aboolean%2Cmetafields.SuitableFor.Frail%3Aboolean%2Cmetafields.SuitableFor.Pregnant%3Aboolean">Edit Suitable for</a></li>
@@ -166,7 +175,11 @@
 {% comment %} Product listing {% endcomment %}
 {% paginate collection.products by 2 %}
   <div data-js="products">
+
+    {% if oversize == false %}
     <noscript>
+    {% endif %}
+
     {% for product in collection.products %}
       <section aria-label="{{ product.title }}" itemscope="" itemtype="http://schema.org/Product">
         <p><img src="{{ product.featured_image.src | img_url: '500x500', crop: 'center' }}" alt="{{ product.featured_image.alt | escape }}" itemprop="image" loading="lazy"></p>
@@ -193,15 +206,27 @@
     {% else %}
       <p>no matches</p>
     {% endfor %}
+
+    {% if oversize == false %}
     </noscript>
+    {% endif %}
   </div>
+
+  {% if oversize == false %}
   <noscript>
+  {% endif %}
+
   {% if paginate.pages > 1 %}
     {{ paginate | default_pagination }}
   {% endif %}
+
+  {% if oversize == false %}
   </noscript>
+  {% endif %}
+
 {% endpaginate %}
 
+{% if oversize == false %}
 <script>
 var objProducts = [ {% comment %} Generating the custom JSON {% endcomment %}
   {% for product in collection.products %}
@@ -249,4 +274,5 @@ var objProducts = [ {% comment %} Generating the custom JSON {% endcomment %}
 ];
 </script>
 <script src="{{ 'product-filter.js' | asset_url }}"></script>
+{% endif %}
 <!-- end {{ template }} -->
