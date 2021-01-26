@@ -1,0 +1,13 @@
+<!-- start metafield-view-products snippet -->
+<p>
+    <label for="products">Select a product</label>
+    <select id="products" data-js="auto">
+        <option value="">Select a product</option>
+        {% for product in collections.all.products %}
+            {% unless product.id == blank %}
+                <option value="{{ product.id }}">{{ product.title }}</option>
+            {% endunless %}
+        {% endfor %}
+    </select>
+</p>
+<!-- end metafield-view-products snippet -->

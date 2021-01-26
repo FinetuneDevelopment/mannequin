@@ -1,0 +1,11 @@
+<!-- start metafield-view-collections snippet -->
+<p>
+    <label for="articles">Select a collection</label>
+    <select id="collections" data-js="auto">
+        <option value="">Select a collection</option>
+        {%- for collection in collections -%}
+        <option value="{{ collection.id }}">{{ collection.title }}</option>
+        {%- endfor -%}
+    </select>
+</p>
+<!-- end metafield-view-collections snippet -->

@@ -1,0 +1,17 @@
+<!-- start metafield-view-product-variant snippet -->
+<p>
+    <label for="product_variant">Select a product variant</label>
+    <select id="variants" data-js="auto">
+        <option value="">Select a product variant</option>
+        {% for product in collections.all.products %}
+            {% if product.variants.size > 1 %}
+                <optgroup label="{{product.title}}">
+                {% for variant in product.variants %}
+                    <option value="{{ variant.id }}" data-parentid="{{ product.id }}">{{ variant.title }}</option>
+                {% endfor %}
+                </optgroup>
+            {% endif %}
+        {% endfor %}
+    </select>
+</p>
+<!-- end metafield-view-product-variant snippet -->

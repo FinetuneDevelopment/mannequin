@@ -1,0 +1,21 @@
+<!-- start metafield-view-articles snippet -->
+<p>
+    <label for="articles">Select an article</label>
+    <select id="articles" data-js="auto">
+        <option value="">Select an article</option>
+        {% comment %}
+        Add in the names of all of your blogs here,
+        for example "news,updates,howto"
+        {% endcomment %}
+        {% assign all_blogs = "news,how-to" | split: "," %}
+        {% for blog_handle in all_blogs %}
+            {% assign current_blog = blogs[blog_handle] %}
+            <optgroup label="{{ current_blog.title }} blog">
+            {% for article in current_blog.articles %}
+                <option value="{{ article.id }}" data-parentid="{{ current_blog.id }}">{{ article.title }}</option>
+            {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </select>
+</p>
+<!-- end metafield-view-articles snippet -->

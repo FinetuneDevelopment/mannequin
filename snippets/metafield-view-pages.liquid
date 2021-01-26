@@ -1,0 +1,18 @@
+<!-- start metafield-view-page snippet -->
+<!-- start {{ snippet }} -->
+<p>
+    <label for="pages">Select a page</label>
+    <select id="pages" data-js="auto">
+        <option value="">Select a page</option>
+        {% for linklist in linklists %}
+            <optgroup label="{{ linklist.title }}">
+                {% for link in linklist.links %}
+                    {% unless link.object.id == blank %}
+                        <option value="{{ link.object.id }}">{{ link.object.title }}</option>
+                    {% endunless %}
+                {% endfor %}
+            </optgroup>
+        {% endfor %}
+    </select>
+</p>
+<!-- end metafield-view snippet -->
