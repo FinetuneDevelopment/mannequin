@@ -1,4 +1,4 @@
-<!-- metadata snippet -->
+<!-- start metafield-add snippet -->
 {% comment %}
 For a full write-up of how this works, visit:
 finetunepartners.com/insights/metafields-in-shopify-without-apps
@@ -62,94 +62,6 @@ finetunepartners.com/insights/metafields-in-shopify-without-apps
         <input type="hidden" name="edit" id="hiddenEdit">
         <input type="submit" value="Bulk edit metafields" title="Edit these new metafields within Shopify">
     </p>
-</form>
-
-<hr>
-
-<section aria-label="View existing metafields">
-    <h2>View existing metafields</h2>
-    <p>This form lets you view (in a <abbr title="JavaScript Object Notation">JSON</abbr> file) what the current metafields look like, in various content types.</p>
-
-    <fieldset>
-        <legend>Pick a content block</legend>
-
-        <p>
-            <label for="pages">Select a page</label>
-            <select id="pages" data-js="auto">
-                <option value="">Select a page</option>
-                {% for linklist in linklists %}
-                    <optgroup label="{{ linklist.title }}">
-                        {% for link in linklist.links %}
-                            {% unless link.object.id == blank %}
-                                <option value="{{ link.object.id }}">{{ link.object.title }}</option>
-                            {% endunless %}
-                        {% endfor %}
-                    </optgroup>
-                {% endfor %}
-            </select>
-        </p>
-
-        <p>
-            <label for="products">Select a product</label>
-            <select id="products" data-js="auto">
-                <option value="">Select a product</option>
-                {% for product in collections.all.products %}
-                    {% unless product.id == blank %}
-                        <option value="{{ product.id }}">{{ product.title }}</option>
-                    {% endunless %}
-                {% endfor %}
-            </select>
-        </p>
-
-        <p>
-            <label for="articles">Select an article</label>
-            <select id="articles" data-js="auto">
-                <option value="">Select an article</option>
-                {% comment %}
-                Add in the names of all of your blogs here,
-                for example "news,updates,howto"
-                {% endcomment %}
-                {% assign all_blogs = "news,how-to" | split: "," %}
-                {% for blog_handle in all_blogs %}
-                    {% assign current_blog = blogs[blog_handle] %}
-                    <optgroup label="{{ current_blog.title }} blog">
-                    {% for article in current_blog.articles %}
-                        <option value="{{ article.id }}" data-parentid="{{ current_blog.id }}">{{ article.title }}</option>
-                    {% endfor %}
-                    </optgroup>
-                {% endfor %}
-            </select>
-        </p>
-
-        <p>
-            <label for="articles">Select a collection</label>
-            <select id="collections" data-js="auto">
-                <option value="">Select a collection</option>
-                {%- for collection in collections -%}
-                <option value="{{ collection.id }}">{{ collection.title }}</option>
-                {%- endfor -%}
-            </select>
-        </p>
-
-        <p>
-            <label for="product_variant">Select a product variant</label>
-            <select id="variants" data-js="auto">
-                <option value="">Select a product variant</option>
-                {% for product in collections.all.products %}
-                    {% if product.variants.size > 1 %}
-                        <optgroup label="{{product.title}}">
-                        {% for variant in product.variants %}
-                            <option value="{{ variant.id }}" data-parentid="{{ product.id }}">{{ variant.title }}</option>
-                        {% endfor %}
-                        </optgroup>
-                    {% endif %}
-                {% endfor %}
-            </select>
-        </p>
-
-        <p><button type="button" id="view-json">View <abbr>JSON</abbr></button></p>
-    </fieldset>
-
 </form>
 
 <script>
@@ -271,45 +183,6 @@ finetunepartners.com/insights/metafields-in-shopify-without-apps
         }
         hiddenEdit.value = editString;
     }
-
-    // Show content JSON, select boxes
-    var btnView = document.getElementById('view-json');
-    btnView.addEventListener('click', function () {
-        // The five select boxes, letting you choose the content
-        var id, selectBoxes = document.querySelectorAll('[data-js="auto"]');
-        for (var i = 0; i < selectBoxes.length; i++) {
-            // Content item ID
-            id = selectBoxes[i].value;
-            // Used for blog articles and product variations
-            parentID = selectBoxes[i].options[selectBoxes[i].selectedIndex].getAttribute('data-parentid');
-            // This will follow the first valid link found, then stop.
-            if (parentID && id !== '') {
-                bounce(id,selectBoxes[i].getAttribute('id'),parentID);
-                break;
-            }
-            else if (id !== '') {
-                bounce(id,selectBoxes[i].getAttribute('id'));
-                break;
-            }
-        }
-    });
-
-    // "Bounces" the user to the correct URL to view their JSON
-    function bounce(id,contentType,parentID) {
-        var URL = '';
-        // shopify.dev/docs/admin-api/rest/reference/metafield
-        switch (contentType) {
-            case 'variants':
-                URL = '/admin/products/' + parentID + '/' + contentType + '/' + id + '/metafields.json';
-                break;
-            case 'articles':
-                URL = '/admin/blogs/' + parentID + '/' + contentType + '/' + id + '/metafields.json';
-                break;
-            default:
-                URL = '/admin/' + contentType + '/' + id + '/metafields.json';
-        }
-        document.location.href = '//' + document.location.hostname + URL;
-    }
 })();
 </script>
-<!-- end metadata snippet -->
+<!-- end metafield-add snippet -->

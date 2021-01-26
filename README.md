@@ -1,5 +1,5 @@
-# mannequin
-An improved version of [Shopify Theme Kit](https://shopify.github.io/themekit/), with additional functionality and minimal styling. Intended as a grab-bag of code to enhance the functionality of Theme Kit, this assumes you already have Theme Kit running on your local machine.
+# Mannequin
+A version of [Shopify Theme Kit](https://shopify.github.io/themekit/), with additional functionality and minimal styling. Intended as a grab-bag of code to enhance the functionality of Theme Kit, this assumes you already have Theme Kit running on your local machine.
 
 ## Features
 
