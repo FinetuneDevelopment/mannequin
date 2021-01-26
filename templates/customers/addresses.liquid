@@ -14,6 +14,7 @@
   <hr>
 
   {% for address in customer.addresses %}
+    {% comment %} List address {% endcomment %}
     <section aria-label="Address {{ forloop.index }}">
       <h2>Address {{ forloop.index }}</h2>
       <p>
@@ -51,6 +52,7 @@
 
     <hr>
 
+    {% comment %} Edit an existing address {% endcomment %}
     {% form 'customer_address', address %}
       <h3 id="edit-address-{{ forloop.index }}">Edit address {{ forloop.index }}</h3>
       <p>
@@ -106,6 +108,7 @@
       </p>
     {% endform %}
 
+    {% comment %} Delete an address {% endcomment %}
     <form method="post" action="/account/addresses/{{ address.id }}">
       <p>
         <input type="hidden" name="_method" value="delete">
@@ -117,6 +120,7 @@
 
   {% endfor %}
 
+  {% comment %} Add a new address {% endcomment %}
   {% form 'customer_address', customer.new_address %}
     <h2>Add new address</h2>
     <p>
