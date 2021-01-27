@@ -18,7 +18,7 @@
         {% endif %}
       </li>
     {% endfor %}
-    <li><a href="/cart">Cart {{ cart.item_count }}</a></li>
+    <li><a href="{{ routes.cart_url }}">Cart {{ cart.item_count }}</a></li>
     {% if shop.customer_accounts_enabled %}
       {% if customer %}
         <li><a href="/account">My account</a></li>
