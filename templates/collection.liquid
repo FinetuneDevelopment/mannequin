@@ -158,7 +158,8 @@
 {% endif %}
 
 {% comment %} Links to enable Shopify editors to change the metafield data {% endcomment %}
-{% capture admin %}{% render 'admin-check' %}{% endcapture %}
+{% capture tempadmin %}{% render 'admin-check' %}{% endcapture %}
+{% assign admin = tempadmin | strip %}
 {% if admin == 'true' %}
   <h3>Edit metafield data</h3>
   <ul>
