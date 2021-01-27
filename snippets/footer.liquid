@@ -1,6 +1,6 @@
 <footer>
-    {% unless settings.site_logo_light == blank %}
-    <p><img src="{{ settings.site_logo_light.src | img_url: '240x' }}" alt="{{ shop.name }}"></p>
+    {% unless settings.site_logo_dark == blank %}
+        <p><img src="{{ settings.site_logo_dark.src | img_url: '240x' }}" alt="{{ shop.name }}"></p>
     {% endunless %}
     <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
         {% unless shop.name == blank %}
