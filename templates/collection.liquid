@@ -202,7 +202,7 @@
         {% endunless %}
         {% if product.available %}
         {% comment %} Note that this does not take into account variants {% endcomment %}
-        <p><a href="/cart/add?id={{ product.variants[0].id }}">Order now</a></p>
+        <p><a href="{{ routes.cart_add_url }}?id={{ product.variants[0].id }}">Order now</a></p>
         {% else %}
         <p><strong>Sorry - this product is sold out</strong></p>
         {% endif %}

@@ -66,7 +66,7 @@
             {% endif %}
         {% endfor %}
         <h2>Your account</h2>
-        <p><a href="/cart" itemprop="name">Shopping cart</a></p>
+        <p><a href="{{ routes.cart_url }}" itemprop="name">Shopping cart</a></p>
         {% if shop.customer_accounts_enabled %}
             {% if customer %}
                 <p><a href="/account" itemprop="name">account</a></p>
