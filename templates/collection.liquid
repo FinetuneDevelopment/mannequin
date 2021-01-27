@@ -33,6 +33,7 @@
     <p>{{ currencySymbol }}<output for="price-range-max">{{ priceHigh | divided_by: 100 }}</output></p>
   </fieldset>
 
+  {% if collection.all_tags.size > 0 %}
   <fieldset>
     <legend>By tags</legend>
     <p>
@@ -42,19 +43,22 @@
       {% endfor %}
     </p>
   </fieldset>
+  {% endif %}
 
+  {% comment %} Creating an Array of all product types {% endcomment %}
+  {% capture allTypes %}{% for product in collection.products %}{{ product.type }}|{% endfor %}{% endcapture %}
+  {% assign uniqueTypes = allTypes | split: "|" | uniq %}
+  {% if uniqueTypes.size > 1 %}
   <fieldset>
     <legend>By product type</legend>
     <p>
-      {% comment %} Creating an Array of all product types {% endcomment %}
-      {% capture allTypes %}{% for product in collection.products %}{{ product.type }}|{% endfor %}{% endcapture %}
-      {% assign uniqueTypes = allTypes | split: "|" | uniq %}
       {% for type in uniqueTypes %}
       <input type="radio" name="ProductType" id="{{ type }}" class="toggle sr-only" data-js="choice">
       <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
       {% endfor %}
     </p>
   </fieldset>
+  {% endif %}
 
   <fieldset>
     <legend>By manufacturer</legend>
@@ -69,84 +73,84 @@
       </p>
   </fieldset>
 
-  <fieldset>
-    <legend>Suitable for</legend>
-      {% comment %}
-        Build up the other filters, based on the metafields
-        Note that to account for whitespace, the capture should be on one line.
-      {% endcomment %}
-      {% capture allSuitableFor %}{% for product in collection.products %}{% for category in product.metafields.SuitableFor %}{{ category.first }}|{% endfor %}{% endfor %}{% endcapture %}
-      {% assign uniqueSuitableFor = allSuitableFor | split: "|" | uniq %}
-      {% comment %} Only show filters relevant to this collection {% endcomment %}
-      {% if uniqueSuitableFor.size > 0 %}
-      <p>
-        {% for category in uniqueSuitableFor %}
-        <input type="radio" name="SuitableFor" id="{{ category }}" class="toggle sr-only" data-js="metafield">
-        <label for="{{ category }}" class="btn btn-pill">{{ category }}</label>
-        {% endfor %}
-      </p>
-      {% endif %}
-  </fieldset>
+  {% comment %}
+    Build up the other filters, based on the metafields
+    Note that to account for whitespace, the capture should be on one line.
+  {% endcomment %}
+  {% capture allSuitableFor %}{% for product in collection.products %}{% for category in product.metafields.SuitableFor %}{{ category.first }}|{% endfor %}{% endfor %}{% endcapture %}
+  {% assign uniqueSuitableFor = allSuitableFor | split: "|" | uniq %}
+  {% comment %} Only show filters relevant to this collection {% endcomment %}
+  {% if uniqueSuitableFor.size > 0 %}
+    <fieldset>
+      <legend>Suitable for</legend>
+        <p>
+          {% for category in uniqueSuitableFor %}
+          <input type="radio" name="SuitableFor" id="{{ category }}" class="toggle sr-only" data-js="metafield">
+          <label for="{{ category }}" class="btn btn-pill">{{ category }}</label>
+          {% endfor %}
+        </p>
+    </fieldset>
+  {% endif %}
 
-  <fieldset>
-    <legend>Occasion</legend>
-      {% capture allOccasions %}{% for product in collection.products %}{% for occasion in product.metafields.Occasion %}{{ occasion.first }}|{% endfor %}{% endfor %}{% endcapture %}
-      {% assign uniqueOccasions = allOccasions | split: "|" | uniq %}
-      {% comment %} Only show filters relevant to this collection {% endcomment %}
-      {% if uniqueOccasions.size > 0 %}
-      <p>
-        {% for type in uniqueOccasions %}
-        <input type="radio" name="occasion" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
-        {% endfor %}
-      </p>
-      {% endif %}
-  </fieldset>
+  {% capture allOccasions %}{% for product in collection.products %}{% for occasion in product.metafields.Occasion %}{{ occasion.first }}|{% endfor %}{% endfor %}{% endcapture %}
+  {% assign uniqueOccasions = allOccasions | split: "|" | uniq %}
+  {% comment %} Only show filters relevant to this collection {% endcomment %}
+  {% if uniqueOccasions.size > 0 %}
+    <fieldset>
+      <legend>Occasion</legend>
+        <p>
+          {% for type in uniqueOccasions %}
+          <input type="radio" name="occasion" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          {% endfor %}
+        </p>
+    </fieldset>
+  {% endif %}
 
-  <fieldset>
-    <legend>Media supported</legend>
-      {% capture allMP3 %}{% for product in collection.products %}{% for feature in product.metafields.mp3 %}{{ feature.first }}|{% endfor %}{% endfor %}{% endcapture %}
-      {% assign uniqueMP3 = allMP3 | split: "|" | uniq %}
-      {% comment %} Only show filters relevant to this collection {% endcomment %}
-      {% if uniqueMP3.size > 0 %}
-      <p>
-        {% for type in uniqueMP3 %}
-        <input type="radio" name="mpthree" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
-        {% endfor %}
-      </p>
-      {% endif %}
-  </fieldset>
+  {% capture allMP3 %}{% for product in collection.products %}{% for feature in product.metafields.mp3 %}{{ feature.first }}|{% endfor %}{% endfor %}{% endcapture %}
+  {% assign uniqueMP3 = allMP3 | split: "|" | uniq %}
+  {% comment %} Only show filters relevant to this collection {% endcomment %}
+  {% if uniqueMP3.size > 0 %}
+    <fieldset>
+      <legend>Media supported</legend>
+        <p>
+          {% for type in uniqueMP3 %}
+          <input type="radio" name="mpthree" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          {% endfor %}
+        </p>
+    </fieldset>
+  {% endif %}
 
-  <fieldset>
-    <legend><abbr title="Thermal Overall Grade">TOG</abbr> value</strong></legend>
-      {% capture allTog %}{% for product in collection.products %}{% for value in product.metafields.tog %}{{ value.first }}|{% endfor %}{% endfor %}{% endcapture %}
-      {% assign uniqueTog = allTog | split: "|" | uniq %}
-      {% comment %} Only show filters relevant to this collection {% endcomment %}
-      {% if uniqueTog.size > 0 %}
-      <p>
-        {% for type in uniqueTog %}
-        <input type="radio" name="tog" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
-        {% endfor %}
-      </p>
-      {% endif %}
-  </fieldset>
+  {% capture allTog %}{% for product in collection.products %}{% for value in product.metafields.tog %}{{ value.first }}|{% endfor %}{% endfor %}{% endcapture %}
+  {% assign uniqueTog = allTog | split: "|" | uniq %}
+  {% comment %} Only show filters relevant to this collection {% endcomment %}
+  {% if uniqueTog.size > 0 %}
+    <fieldset>
+      <legend><abbr title="Thermal Overall Grade">TOG</abbr> value</strong></legend>
+        <p>
+          {% for type in uniqueTog %}
+          <input type="radio" name="tog" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          {% endfor %}
+        </p>
+    </fieldset>
+  {% endif %}
 
-  <fieldset>
-    <legend>Material used</legend>
-      {% capture allMaterial %}{% for product in collection.products %}{% for type in product.metafields.material %}{{ type.first }}|{% endfor %}{% endfor %}{% endcapture %}
-      {% assign uniqueMaterial = allMaterial | split: "|" | uniq %}
-      {% comment %} Only show filters relevant to this collection {% endcomment %}
-      {% if uniqueMaterial.size > 0 %}
-      <p>
-        {% for type in uniqueMaterial %}
-        <input type="radio" name="material" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-        <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
-        {% endfor %}
-      </p>
-      {% endif %}
-  </fieldset>
+  {% capture allMaterial %}{% for product in collection.products %}{% for type in product.metafields.material %}{{ type.first }}|{% endfor %}{% endfor %}{% endcapture %}
+  {% assign uniqueMaterial = allMaterial | split: "|" | uniq %}
+  {% comment %} Only show filters relevant to this collection {% endcomment %}
+  {% if uniqueMaterial.size > 0 %}
+    <fieldset>
+      <legend>Material used</legend>
+        <p>
+          {% for type in uniqueMaterial %}
+          <input type="radio" name="material" id="{{ type }}" class="toggle sr-only" data-js="metafield">
+          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          {% endfor %}
+        </p>
+    </fieldset>
+  {% endif %}
 
   <p>
     <input type="checkbox" id="inStock">
