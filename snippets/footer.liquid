@@ -78,7 +78,7 @@
         {% endif %}
     </nav>
 
-    <form action="/search" method="get" role="search">
+    <form action="{{ routes.search_url }}" method="get" role="search">
         <input type="hidden" name="options[unavailable_products]" value="hide">
         <p>
             <label for="search-field">Search site</label>
