@@ -1,14 +1,12 @@
 <!-- start {{ template }} -->
-{% assign product_limit = 29 %}
-{% if collection.products.size > product_limit %}
-{% assign oversize = true %}
-{% else %}
-{% assign oversize = false %}
+{% assign product_limit = 1500 %}
+{% if collection.products.size < product_limit %}
+{% assign load_products = true %}
 {% endif %}
 
 <h1>{{ collection.title }}</h1>
 
-{% if oversize == false %}
+{% if load_products %}
 {% comment %} Product filters {% endcomment %}
 <form data-js="filter" action="#" method="get">
   <h2>Filter products</h2>
@@ -176,7 +174,7 @@
 {% paginate collection.products by 2 %}
   <div data-js="products">
 
-    {% if oversize == false %}
+    {% if load_products %}
     <noscript>
     {% endif %}
 
@@ -207,12 +205,12 @@
       <p>no matches</p>
     {% endfor %}
 
-    {% if oversize == false %}
+    {% if load_products %}
     </noscript>
     {% endif %}
   </div>
 
-  {% if oversize == false %}
+  {% if load_products %}
   <noscript>
   {% endif %}
 
@@ -220,13 +218,13 @@
     {{ paginate | default_pagination }}
   {% endif %}
 
-  {% if oversize == false %}
+  {% if load_products %}
   </noscript>
   {% endif %}
 
 {% endpaginate %}
 
-{% if oversize == false %}
+{% if load_products %}
 <script>
 var objProducts = [ {% comment %} Generating the custom JSON {% endcomment %}
   {% for product in collection.products %}
