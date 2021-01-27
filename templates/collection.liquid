@@ -34,21 +34,21 @@
   </fieldset>
 
   {% if collection.all_tags.size > 0 %}
-  <fieldset>
-    <legend>By tags</legend>
-    <p>
-      {% for tag in collection.all_tags %}
-        <input type="checkbox" name="tags" id="{{ tag }}" class="toggle sr-only" data-js="tag">
-        <label for="{{ tag }}" class="btn btn-pill">{{ tag }}</label>
-      {% endfor %}
-    </p>
-  </fieldset>
+    <fieldset>
+      <legend>By tags</legend>
+      <p>
+        {% for tag in collection.all_tags %}
+          <input type="checkbox" name="tags" id="{{ tag }}" class="toggle sr-only" data-js="tag">
+          <label for="{{ tag }}" class="btn btn-pill">{{ tag }}</label>
+        {% endfor %}
+      </p>
+    </fieldset>
   {% endif %}
 
   {% comment %} Creating an Array of all product types {% endcomment %}
   {% capture allTypes %}{% for product in collection.products %}{{ product.type }}|{% endfor %}{% endcapture %}
   {% assign uniqueTypes = allTypes | split: "|" | uniq %}
-  {% if uniqueTypes.size > 1 %}
+  {% if uniqueTypes.size > 1 %}{% comment %} Only show the filter, if there is two or more choices to make {% endcomment %}
   <fieldset>
     <legend>By product type</legend>
     <p>
@@ -60,18 +60,20 @@
   </fieldset>
   {% endif %}
 
-  <fieldset>
-    <legend>By manufacturer</legend>
-      <p>
-        {% comment %} Creating an Array of all vendor types {% endcomment %}
-        {% capture allVendors %}{% for product in collection.products %}{{ product.vendor }}|{% endfor %}{% endcapture %}
-        {% assign uniqueVendors = allVendors | split: "|" | uniq %}
-        {% for vendor in uniqueVendors %}
-        <input type="radio" name="vendor" id="{{ vendor }}" class="toggle sr-only" data-js="choice">
-        <label for="{{ vendor }}" class="btn btn-pill">{{ vendor }}</label>
-        {% endfor %}
-      </p>
-  </fieldset>
+  {% comment %} Creating an Array of all vendor types {% endcomment %}
+  {% capture allVendors %}{% for product in collection.products %}{{ product.vendor }}|{% endfor %}{% endcapture %}
+  {% assign uniqueVendors = allVendors | split: "|" | uniq %}
+  {% if uniqueVendors.size > 1 %}{% comment %} Only show the filter, if there is two or more choices to make {% endcomment %}
+    <fieldset>
+      <legend>By manufacturer</legend>
+        <p>
+          {% for vendor in uniqueVendors %}
+          <input type="radio" name="vendor" id="{{ vendor }}" class="toggle sr-only" data-js="choice">
+          <label for="{{ vendor }}" class="btn btn-pill">{{ vendor }}</label>
+          {% endfor %}
+        </p>
+    </fieldset>
+  {% endif %}
 
   {% comment %}
     Build up the other filters, based on the metafields
@@ -80,7 +82,7 @@
   {% capture allSuitableFor %}{% for product in collection.products %}{% for category in product.metafields.SuitableFor %}{{ category.first }}|{% endfor %}{% endfor %}{% endcapture %}
   {% assign uniqueSuitableFor = allSuitableFor | split: "|" | uniq %}
   {% comment %} Only show filters relevant to this collection {% endcomment %}
-  {% if uniqueSuitableFor.size > 0 %}
+  {% if uniqueSuitableFor.size > 1 %}
     <fieldset>
       <legend>Suitable for</legend>
         <p>
@@ -95,7 +97,7 @@
   {% capture allOccasions %}{% for product in collection.products %}{% for occasion in product.metafields.Occasion %}{{ occasion.first }}|{% endfor %}{% endfor %}{% endcapture %}
   {% assign uniqueOccasions = allOccasions | split: "|" | uniq %}
   {% comment %} Only show filters relevant to this collection {% endcomment %}
-  {% if uniqueOccasions.size > 0 %}
+  {% if uniqueOccasions.size > 1 %}
     <fieldset>
       <legend>Occasion</legend>
         <p>
@@ -110,7 +112,7 @@
   {% capture allMP3 %}{% for product in collection.products %}{% for feature in product.metafields.mp3 %}{{ feature.first }}|{% endfor %}{% endfor %}{% endcapture %}
   {% assign uniqueMP3 = allMP3 | split: "|" | uniq %}
   {% comment %} Only show filters relevant to this collection {% endcomment %}
-  {% if uniqueMP3.size > 0 %}
+  {% if uniqueMP3.size > 1 %}
     <fieldset>
       <legend>Media supported</legend>
         <p>
@@ -125,7 +127,7 @@
   {% capture allTog %}{% for product in collection.products %}{% for value in product.metafields.tog %}{{ value.first }}|{% endfor %}{% endfor %}{% endcapture %}
   {% assign uniqueTog = allTog | split: "|" | uniq %}
   {% comment %} Only show filters relevant to this collection {% endcomment %}
-  {% if uniqueTog.size > 0 %}
+  {% if uniqueTog.size > 1 %}
     <fieldset>
       <legend><abbr title="Thermal Overall Grade">TOG</abbr> value</strong></legend>
         <p>
@@ -140,7 +142,7 @@
   {% capture allMaterial %}{% for product in collection.products %}{% for type in product.metafields.material %}{{ type.first }}|{% endfor %}{% endfor %}{% endcapture %}
   {% assign uniqueMaterial = allMaterial | split: "|" | uniq %}
   {% comment %} Only show filters relevant to this collection {% endcomment %}
-  {% if uniqueMaterial.size > 0 %}
+  {% if uniqueMaterial.size > 1 %}
     <fieldset>
       <legend>Material used</legend>
         <p>
