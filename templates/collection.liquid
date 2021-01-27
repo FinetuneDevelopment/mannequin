@@ -38,8 +38,8 @@
       <legend>By tags</legend>
       <p>
         {% for tag in collection.all_tags %}
-          <input type="checkbox" name="tags" id="{{ tag }}" class="toggle sr-only" data-js="tag">
-          <label for="{{ tag }}" class="btn btn-pill">{{ tag }}</label>
+          <input type="checkbox" name="tags" id="{{ tag }}" data-js="tag">
+          <label for="{{ tag }}">{{ tag }}</label>
         {% endfor %}
       </p>
     </fieldset>
@@ -53,8 +53,8 @@
     <legend>By product type</legend>
     <p>
       {% for type in uniqueTypes %}
-      <input type="radio" name="ProductType" id="{{ type }}" class="toggle sr-only" data-js="choice">
-      <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+      <input type="radio" name="ProductType" id="{{ type }}" data-js="choice">
+      <label for="{{ type }}">{{ type }}</label>
       {% endfor %}
     </p>
   </fieldset>
@@ -68,8 +68,8 @@
       <legend>By manufacturer</legend>
         <p>
           {% for vendor in uniqueVendors %}
-          <input type="radio" name="vendor" id="{{ vendor }}" class="toggle sr-only" data-js="choice">
-          <label for="{{ vendor }}" class="btn btn-pill">{{ vendor }}</label>
+          <input type="radio" name="vendor" id="{{ vendor }}" data-js="choice">
+          <label for="{{ vendor }}">{{ vendor }}</label>
           {% endfor %}
         </p>
     </fieldset>
@@ -87,8 +87,8 @@
       <legend>Suitable for</legend>
         <p>
           {% for category in uniqueSuitableFor %}
-          <input type="radio" name="SuitableFor" id="{{ category }}" class="toggle sr-only" data-js="metafield">
-          <label for="{{ category }}" class="btn btn-pill">{{ category }}</label>
+          <input type="radio" name="SuitableFor" id="{{ category }}" data-js="metafield">
+          <label for="{{ category }}">{{ category }}</label>
           {% endfor %}
         </p>
     </fieldset>
@@ -102,8 +102,8 @@
       <legend>Occasion</legend>
         <p>
           {% for type in uniqueOccasions %}
-          <input type="radio" name="occasion" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          <input type="radio" name="occasion" id="{{ type }}" data-js="metafield">
+          <label for="{{ type }}">{{ type }}</label>
           {% endfor %}
         </p>
     </fieldset>
@@ -117,8 +117,8 @@
       <legend>Media supported</legend>
         <p>
           {% for type in uniqueMP3 %}
-          <input type="radio" name="mpthree" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          <input type="radio" name="mpthree" id="{{ type }}" data-js="metafield">
+          <label for="{{ type }}">{{ type }}</label>
           {% endfor %}
         </p>
     </fieldset>
@@ -132,8 +132,8 @@
       <legend><abbr title="Thermal Overall Grade">TOG</abbr> value</strong></legend>
         <p>
           {% for type in uniqueTog %}
-          <input type="radio" name="tog" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          <input type="radio" name="tog" id="{{ type }}" data-js="metafield">
+          <label for="{{ type }}">{{ type }}</label>
           {% endfor %}
         </p>
     </fieldset>
@@ -147,8 +147,8 @@
       <legend>Material used</legend>
         <p>
           {% for type in uniqueMaterial %}
-          <input type="radio" name="material" id="{{ type }}" class="toggle sr-only" data-js="metafield">
-          <label for="{{ type }}" class="btn btn-pill">{{ type }}</label>
+          <input type="radio" name="material" id="{{ type }}" data-js="metafield">
+          <label for="{{ type }}">{{ type }}</label>
           {% endfor %}
         </p>
     </fieldset>
@@ -206,7 +206,7 @@
         {% else %}
         <p><strong>Sorry - this product is sold out</strong></p>
         {% endif %}
-        <p><a href="{{ product.url | within: collection }}">More information<span class="sr-only"> about {{ product.title }}</span></a></p>
+        <p><a href="{{ product.url | within: collection }}">More information about {{ product.title }}</a></p>
       </section>
     {% else %}
       <p>no matches</p>
