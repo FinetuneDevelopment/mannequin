@@ -69,7 +69,7 @@
         <p><a href="{{ routes.cart_url }}" itemprop="name">Shopping cart</a></p>
         {% if shop.customer_accounts_enabled %}
             {% if customer %}
-                <p><a href="/account" itemprop="name">account</a></p>
+                <p><a href="{{ routes.account_url }}" itemprop="name">account</a></p>
                 <p>{{ 'log out' | customer_logout_link }}</p>
             {% else %}
                 <p>{{ 'log in' | customer_login_link }}</p>

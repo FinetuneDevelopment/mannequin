@@ -109,7 +109,7 @@
     {% endform %}
 
     {% comment %} Delete an address {% endcomment %}
-    <form method="post" action="/account/addresses/{{ address.id }}">
+    <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}">
       <p>
         <input type="hidden" name="_method" value="delete">
         <button>Delete address {{ forloop.index }}</button>

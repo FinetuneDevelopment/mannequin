@@ -4,7 +4,7 @@ This template is used on the /collections/ page and lists out every collection
 in the shop, plus every product within that collection.
 {% endcomment %}
 
-<form action="/search" method="get" role="search">
+<form action="{{ routes.search_url }}" method="get" role="search">
   <p>Search for a product:</p>
   <fieldset>
     <legend>Display:</legend>
