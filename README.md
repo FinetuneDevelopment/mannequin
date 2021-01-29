@@ -7,7 +7,7 @@ A version of [Shopify Theme Kit](https://shopify.github.io/themekit/), with addi
 - [Unique page and social sharing images, added through the Shopify front end](https://finetunepartners.com/insights/page-specific-images-in-shopify/)
 - [Customer address management](https://finetunepartners.com/insights/managing-user-addresses-in-shopify/)
 - [Product search and filtering, without apps](https://finetunepartners.com/insights/product-filtering-in-shopify-without-apps/)
-- Semi-intelligent 404 pages
+- [Semi-intelligent 404 pages](https://finetunepartners.com/insights/improving-your-shopify-404-page/)
 - Site search filtering
 - Typeface and colour selection via Shopify front end
 - Favicon management from Shopify front end
