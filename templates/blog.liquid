@@ -3,14 +3,26 @@
 
   <h1>{{ blog.title }}</h1>
   {% for article in blog.articles %}
-    <article aria-label="{{ article.title }}">
-      <h2><a href="{{ article.url }}">{{ article.title }}</a></h2>
-      <p><strong>{{ article.author }}</strong>, {{ article.created_at | time_tag: '%a, %b %d, %Y' }}</p>
-      {% if article.excerpt.size > 0 %}
-        {{ article.excerpt }}
-      {% else %}
-        <p>{{ article.content | strip_html | truncatewords: 100 }}</p>
+    <article aria-label="{{ article.title }}" itemscope itemtype="https://schema.org/NewsArticle">
+      <p>
+        <a href="{{ article.url }}">
+          {% if article.image == blank %}
+            <img src="{{ 'article.jpg' | file_img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
+          {% else %}
+            <img src="{{ article.image | img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
+          {% endif %}
+        </a>
+      </p>
+      {% if article.tags.size > 0 %}
+      <p itemprop="keywords">
+        {% for tag in article.tags %}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" title="Read more articles about {{ tag }}">{{ tag }}</a>
+        {% endfor %}
+      </p>
       {% endif %}
+      <h3 itemprop="headline">{{ article.title }}</h3>
+      <p><a href="{{ article.url }}" title="Read more about {{ article.title }}">Read more about {{ article.title }}</a></p>
+      <meta itemprop="url" content="{{ shop.secure_url }}{{ article.url }}">
     </article>
   {% endfor %}
 
