@@ -33,38 +33,40 @@ for cacheing reasons, it's better to do it with JavaScript {% endcomment %}
 {% assign article_count = 3 %} {% comment %} How many articles you want to show {% endcomment %}
 
 {% if blogs[current_blog].articles.size > 0 %}
-  <h2>Perhaps you'd like to read some recent articles...</h2>
-  {% for article in blogs[current_blog].articles %}
-    {% if forloop.index <= article_count %}
-      <article aria-label="{{ article.title }}" itemscope itemtype="https://schema.org/NewsArticle">
-        <p>
-          {% if article.image == blank %}
-            <img src="{{ 'article.jpg' | file_img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
-          {% else %}
-            <img src="{{ article.image.src | img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.image.alt }}">
-          {% endif %}
-        </p>
-        <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
-        <meta itemprop="headline" content="{{ article.title }}">
-        <meta itemprop="url" content="{{ shop.secure_url }}{{ article.url }}">
+  <aside aria-label="Perhaps you'd like to read some recent articles...">
+    <h2>Perhaps you'd like to read some recent articles...</h2>
+    {% for article in blogs[current_blog].articles %}
+      {% if forloop.index <= article_count %}
+        <article aria-label="{{ article.title }}" itemscope itemtype="https://schema.org/NewsArticle">
+          <p>
+            {% if article.image == blank %}
+              <img src="{{ 'article.jpg' | file_img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
+            {% else %}
+              <img src="{{ article.image.src | img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.image.alt }}">
+            {% endif %}
+          </p>
+          <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+          <meta itemprop="headline" content="{{ article.title }}">
+          <meta itemprop="url" content="{{ shop.secure_url }}{{ article.url }}">
 
-        {% if article.user.image %}
-          <p><img src="{{ article.user.image | img_url: '50x50' }}" alt="{{ article.author }}"></p>
-        {% endif %}
-        <p>
-          <strong itemprop="author">{{ article.author }}</strong>,
-          <span itemprop="dateCreated">{{ article.created_at | time_tag: '%a, %b %d, %Y' }}</span>
-        </p>
-        {% if article.excerpt.size > 0 %}
-          <div itemprop="abstract">{{ article.excerpt }}</div>
-        {% else %}
-          <p itemprop="abstract">{{ article.content | strip_html | truncatewords: 100 }}</p>
-        {% endif %}
-      </article>
-    {% else %}
-      {% break %}
-    {% endif %}
-  {% endfor %}
+          {% if article.user.image %}
+            <p><img src="{{ article.user.image | img_url: '50x50' }}" alt="{{ article.author }}"></p>
+          {% endif %}
+          <p>
+            <strong itemprop="author">{{ article.author }}</strong>,
+            <span itemprop="dateCreated">{{ article.created_at | time_tag: '%a, %b %d, %Y' }}</span>
+          </p>
+          {% if article.excerpt.size > 0 %}
+            <div itemprop="abstract">{{ article.excerpt }}</div>
+          {% else %}
+            <p itemprop="abstract">{{ article.content | strip_html | truncatewords: 100 }}</p>
+          {% endif %}
+        </article>
+      {% else %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+  </aside>
 {% endif %}
 
 <!-- end {{ template }} -->
