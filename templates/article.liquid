@@ -15,6 +15,13 @@
       <strong itemprop="author">{{ article.author }}</strong><br>
       <span itemprop="dateCreated">{{ article.published_at | time_tag: '%a, %b %d, %Y' }}</span>
     </p>
+    {% if article.tags.size > 0 %}
+    <p itemprop="keywords">
+      {% for tag in article.tags %}
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}" title="Read more articles about {{ tag }}">{{ tag }}</a>
+      {% endfor %}
+    </p>
+    {% endif %}
     <p>
       {% if article.image == blank %}
         <img src="{{ 'article.jpg' | file_img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
