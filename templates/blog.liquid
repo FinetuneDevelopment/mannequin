@@ -1,8 +1,30 @@
 <!-- start {{ template }} -->
 {% paginate blog.articles by 12 %}
 
-  <h1>{{ blog.title }}</h1>
-  {% for article in blog.articles %}
+  {% if current_tags %}
+    {% capture blog_title %}{{ blog.title | link_to: blog.url }}: articles tagged <q>{{ current_tags.first }}</q>{% endcapture %}
+  {% else %}
+    {% capture blog_title %}{{ blog.title}}{% endcapture %}
+  {% endif %}
+
+  <h1>{{ blog_title }}</h1>
+
+  {% if blog.all_tags.size > 0 %}
+    <section aria-label="Tags">
+      <h2>Tags</h2>
+      <p>
+        {% for tag in blog.all_tags %}
+          {% if current_tags contains tag %}
+            <strong>{{ tag }}</strong>
+          {% else %}
+            {{ tag | link_to_tag: tag }}
+          {% endif %}
+        {% endfor %}
+      </p>
+    </section>
+  {% endif %}
+
+    {% for article in blog.articles %}
     <article aria-label="{{ article.title }}" itemscope itemtype="https://schema.org/NewsArticle">
       <p>
         <a href="{{ article.url }}">
