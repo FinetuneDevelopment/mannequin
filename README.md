@@ -6,7 +6,7 @@ A version of [Shopify Theme Kit](https://shopify.github.io/themekit/), with addi
 - [Adding metafields without apps](https://finetunepartners.com/insights/metafields-in-shopify-without-apps/)
 - [Unique page and social sharing images, added through the Shopify front end](https://finetunepartners.com/insights/page-specific-images-in-shopify/)
 - [Customer address management](https://finetunepartners.com/insights/managing-user-addresses-in-shopify/)
-- Product search and filtering, without apps
+- [Product search and filtering, without apps](https://finetunepartners.com/insights/product-filtering-in-shopify-without-apps/)
 - Semi-intelligent 404 pages
 - Site search filtering
 - Typeface and colour selection via Shopify front end
