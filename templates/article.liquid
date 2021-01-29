@@ -4,46 +4,101 @@
   {% assign number_of_comments = article.comments_count %}
 {% endif %}
 
-<h1>{{ article.title }}</h1>
-{% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
-{% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
-{{ article.author }} @ {{ article.created_at }}
-
-<div>{{ article.content }}</div>
-{% if blog.comments_enabled? %}
-  <h2>{{ number_of_comments }} comments</h2>
-  {% paginate article.comments by 5 %}
-    {% for comment in article.comments %}
-        <div>{{ comment.content }}</div>
-        {{ comment.author }} @ {{ comment.created_at }}
-    {% endfor %}
-    {% if paginate.pages > 1 %}
-      {{ paginate | default_pagination }}
+<article itemscope itemtype="https://schema.org/NewsArticle">
+  <header aria-label="{{ article.title }}">
+    <h1 itemprop="headline">{{ article.title }}</h1>
+    {% if article.user.image %}
+      <p><img src="{{ article.user.image | img_url: '50x50' }}" alt="{{ article.author }}"></p>
     {% endif %}
-  {% endpaginate %}
+    <p>
+      <strong itemprop="author">{{ article.author }}</strong><br>
+      <span itemprop="dateCreated">{{ article.published_at | time_tag: '%a, %b %d, %Y' }}</span>
+    </p>
+    <p>
+      {% if article.image == blank %}
+        <img src="{{ 'article.jpg' | file_img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
+      {% else %}
+        <img src="{{ article.image.src | img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.image.alt }}">
+      {% endif %}
+    </p>
+  </header>
+  {% unless article.excerpt == blank %}
+    <div itemprop="abstract">
+      {{ article.excerpt }}
+    </div>
+  {% endunless %}
+  <div itemprop="articleBody">
+    {{ article.content }}
+  </div>
+</article>
 
+{% comment %} Related articles {% endcomment %}
+<aside aria-label="Read more articles">
+  <h2>Read more articles</h2>
+  {% for article in blog.articles %}
+    <article aria-label="{{ article.title }}" itemscope itemtype="https://schema.org/NewsArticle">
+      <p>
+        <a href="{{ article.url }}">
+          {% if article.image == blank %}
+            <img src="{{ 'article.jpg' | file_img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
+          {% else %}
+            <img src="{{ article.image | img_url: '400x200', crop: 'center' }}" itemprop="image" alt="{{ article.title }}">
+          {% endif %}
+        </a>
+      </p>
+      {% if article.tags.size > 0 %}
+      <p itemprop="keywords">
+        {% for tag in article.tags %}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" title="Read more articles about {{ tag }}">{{ tag }}</a>
+        {% endfor %}
+      </p>
+      {% endif %}
+      <h3 itemprop="headline">{{ article.title }}</h3>
+      <p><a href="{{ article.url }}" title="Read more about {{ article.title }}">Read more about {{ article.title }}</a></p>
+      <meta itemprop="url" content="{{ shop.secure_url }}{{ article.url }}">
+    </article>
+  {% endfor %}
+</aside>
+
+{% comment %} Article comments {% endcomment %}
+{% if blog.comments_enabled? %}
+  <aside aria-label="{{ number_of_comments }} comments">
+    <h2>
+      <span itemprop="commentCount">{{ number_of_comments }}</span>
+      comment{% unless number_of_comments == 1 %}s{% endunless %}
+    </h2>
+    {% paginate article.comments by 5 %}
+      {% for comment in article.comments %}
+        <blockquote itemprop="comment"]>
+          {{ comment.content }}
+          <footer>
+            <p><strong>{{ comment.author }}</strong> {{ comment.created_at | date: format: 'long' }}</p>
+          </footer>
+        </blockquote>
+      {% endfor %}
+      {% if paginate.pages > 1 %}
+        {{ paginate | default_pagination }}
+      {% endif %}
+    {% endpaginate %}
+  </aside>
+
+  {% comment %} Add comment form {% endcomment %}
   {% form 'new_comment', article %}
+    <h2>Add your voice</h2>
     {{ form.errors | default_errors }}
     <p>
-      <label for="CommentAuthor">Your name</label>
-      <br>
-      <input type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
+      <label for="CommentAuthor">Name</label>
+      <input type="text" name="comment[author]" id="CommentAuthor" placeholder="Name" value="{{ form.author }}" autocapitalize="words">
     </p>
-
     <p>
-      <label for="CommentEmail">Email address</label>
-      <br>
-      <input type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}">
+      <label for="CommentEmail">email</label>
+      <input type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
     </p>
-
     <p>
-      <label for="CommentBody">Your message</label>
-      <br>
-      <textarea name="comment[body]" id="CommentBody" placeholder="Your message">{{ form.body }}</textarea>
+      <label for="CommentBody">Message</label>
+      <textarea cols="30" rows="10" name="comment[body]" id="CommentBody" placeholder="Message" spellcheck="true">{{ form.body }}</textarea>
     </p>
-
     <p><input type="submit" value="Post"></p>
   {% endform %}
-
 {% endif %}
 <!-- end {{ template }} -->
