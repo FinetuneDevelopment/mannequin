@@ -51,7 +51,10 @@ for cacheing reasons, it's better to do it with JavaScript {% endcomment %}
         {% if article.user.image %}
           <p><img src="{{ article.user.image | img_url: '50x50' }}" alt="{{ article.author }}"></p>
         {% endif %}
-        <p><strong itemprop="author">{{ article.author }}</strong>, {{ article.created_at | time_tag: '%a, %b %d, %Y' }}</p>
+        <p>
+          <strong itemprop="author">{{ article.author }}</strong>,
+          <span itemprop="dateCreated">{{ article.created_at | time_tag: '%a, %b %d, %Y' }}</span>
+        </p>
         {% if article.excerpt.size > 0 %}
           <div itemprop="abstract">{{ article.excerpt }}</div>
         {% else %}
