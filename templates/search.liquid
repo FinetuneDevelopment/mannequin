@@ -4,9 +4,6 @@
   <section aria-label="Search{% if search.performed %} Results{% endif %}">
     <form action="{{ routes.search_url }}" method="get" role="search">
       <h1>Search{% if search.performed %} Results{% endif %}</h1>
-      {% if search.performed %}
-      <p>Search again:</p>
-      {% endif %}
       <p>
         <label for="search-field-page">Search site</label>
         <input type="search" name="q" id="search-field-page" placeholder="Search site" role="search" value="{{ search.terms | escape }}">
@@ -57,45 +54,47 @@
     </form>
   </section>
 
-  {% if search.performed and search.results_count > 0 %}
-    <section aria-label="Search results for {{ search.terms | escape }}">
-      <h2>
-        {{search.results_count }}
-        search result{% unless search.results_count == 1 %}s{% endunless %} for
-        <q>{{ search.terms | escape }}</q>:
-      </h2>
-      {% for item in search.results %}
-      <a href="{{ item.url | within: collection }}">
-        <section aria-label="{{ item.title }}">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
-          {% if item.featured_image %}
-            <p><img src="{{ item.featured_image.src | img_url: '130x130', crop: 'center' }}" alt="{{ item.title }}"></p>
-          {% endif %}
-        </section>
-      </a>
-      {% endfor %}
-    </section>
-  {% else %}
-    <section aria-label="No results for {{ search.terms | escape }}, I'm afraid">
-      <h2>No results for <q>{{ search.terms | escape }}</q>, I'm afraid</h2>
-      <p>Have you seen our collections?</p>
-      {% for collection in collections %}
-        <section aria-label="{{ collection.title }}">
-          {% if collection.image %}
-            {% assign collection_image = collection.image %}
-          {% elsif collection.products.first and collection.products.first.images != empty %}
-            {% assign collection_image = collection.products.first.featured_image %}
-          {% else %}
-            {% assign collection_image = blank %}
-          {% endif %}
+  {% if search.performed %}
+    {% if search.results_count > 0 %}
+      <section aria-label="Search result{% unless search.results_count == 1 %}s{% endunless %} for {{ search.terms | escape }}">
+        <h2>
+          {{search.results_count }}
+          search result{% unless search.results_count == 1 %}s{% endunless %} for
+          <q>{{ search.terms | escape }}</q>:
+        </h2>
+        {% for item in search.results %}
+        <a href="{{ item.url | within: collection }}">
+          <section aria-label="{{ item.title }}">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+            {% if item.featured_image %}
+              <p><img src="{{ item.featured_image.src | img_url: '130x130', crop: 'center' }}" alt="{{ item.title }}"></p>
+            {% endif %}
+          </section>
+        </a>
+        {% endfor %}
+      </section>
+    {% else %}
+      <section aria-label="No results for {{ search.terms | escape }}, I'm afraid">
+        <h2>No results for <q>{{ search.terms | escape }}</q>, I'm afraid</h2>
+        <p>Have you seen our collections?</p>
+        {% for collection in collections %}
+          <section aria-label="{{ collection.title }}">
+            {% if collection.image %}
+              {% assign collection_image = collection.image %}
+            {% elsif collection.products.first and collection.products.first.images != empty %}
+              {% assign collection_image = collection.products.first.featured_image %}
+            {% else %}
+              {% assign collection_image = blank %}
+            {% endif %}
 
-          <a href="{{ collection.url }}">
-            <h3>{{ collection.title }}</h3>
-            <p><img src="{{ collection_image | img_url: '60x60', crop: 'center' }}" alt="{{ collection.title }}"></p>
-          </a>
-        </section>
-      {% endfor %}
+            <a href="{{ collection.url }}">
+              <h3>{{ collection.title }}</h3>
+              <p><img src="{{ collection_image | img_url: '60x60', crop: 'center' }}" alt="{{ collection.title }}"></p>
+            </a>
+          </section>
+        {% endfor %}
+    {% endif %}
   {% endif %}
 
   {% if paginate.pages > 1 %}
