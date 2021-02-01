@@ -12,20 +12,25 @@
         <input type="search" name="q" id="search-field-page" placeholder="Search site" role="search" value="{{ search.terms | escape }}">
         <input type="submit" value="Search">
       </p>
+
+      {% comment %}
+      See shopify.dev/tutorials/use-advanced-query-parameters-in-shopify-online-store-search
+      {% endcomment %}
+      <h2>Advanced search</h2>
       <fieldset>
-        <legend>Display:</legend>
+        <legend>Product status:</legend>
         <p>
           <input type="radio" name="options[unavailable_products]" value="show" id="all-products" checked>
           <label for="all-products">All products</label>
 
           <input type="radio" name="options[unavailable_products]" value="hide" id="available-products">
-          <label for="available-products">Products in stock</label>
+          <label for="available-products">Only products in stock</label>
         </p>
       </fieldset>
       <fieldset>
-        <legend>Search:</legend>
+        <legend>Search location:</legend>
         <p>
-          <input type="radio" name="type" value="all" id="type-all" checked>
+          <input type="radio" name="type" value="article,page,product" id="type-all" checked>
           <label for="type-all">Everywhere</label>
 
           <input type="radio" name="type" value="product" id="type-product">
@@ -38,12 +43,27 @@
           <label for="type-page">Pages</label>
         </p>
       </fieldset>
+      <fieldset>
+        <legend>Word match:</legend>
+        <p>If you select <em>loose</em>, a search for <q>micro</q> will match <q>microwave</q> and <q>microcomputer</q>.</p>
+        <p>
+          <input type="radio" name="options[prefix]" value="none" id="prefix-none" checked>
+          <label for="prefix-none">Strict</label>
+
+          <input type="radio" name="options[prefix]" value="last" id="prefix-last">
+          <label for="prefix-last">Loose</label>
+        </p>
+      </fieldset>
     </form>
   </section>
 
   {% if search.performed and search.results_count > 0 %}
     <section aria-label="Search results for {{ search.terms | escape }}">
-      <h2>Search results for <q>{{ search.terms | escape }}</q>:</h2>
+      <h2>
+        {{search.results_count }}
+        search result{% unless search.results_count == 1 %}s{% endunless %} for
+        <q>{{ search.terms | escape }}</q>:
+      </h2>
       {% for item in search.results %}
       <a href="{{ item.url | within: collection }}">
         <section aria-label="{{ item.title }}">
@@ -95,7 +115,7 @@ options accurately.
   var searchParams = {};
   location.search.substr(1).split("&").forEach(
       function(item) {
-          searchParams[item.split("=")[0]] = item.split("=")[1];
+          searchParams[decodeURIComponent(item.split("=")[0])] = decodeURIComponent(item.split("=")[1]);
       }
   );
   var keys   = Object.keys(searchParams);
