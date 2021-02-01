@@ -13,44 +13,46 @@
       {% comment %}
       See shopify.dev/tutorials/use-advanced-query-parameters-in-shopify-online-store-search
       {% endcomment %}
-      <h2>Advanced search</h2>
-      <fieldset>
-        <legend>Product status:</legend>
-        <p>
-          <input type="radio" name="options[unavailable_products]" value="show" id="all-products" checked>
-          <label for="all-products">All products</label>
+      <details>
+        <summary>Advanced search</summary>
+        <fieldset>
+          <legend>Product status:</legend>
+          <p>
+            <input type="radio" name="options[unavailable_products]" value="show" id="all-products" checked>
+            <label for="all-products">All products</label>
 
-          <input type="radio" name="options[unavailable_products]" value="hide" id="available-products">
-          <label for="available-products">Only products in stock</label>
-        </p>
-      </fieldset>
-      <fieldset>
-        <legend>Search location:</legend>
-        <p>
-          <input type="radio" name="type" value="article,page,product" id="type-all" checked>
-          <label for="type-all">Everywhere</label>
+            <input type="radio" name="options[unavailable_products]" value="hide" id="available-products">
+            <label for="available-products">Only products in stock</label>
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Search location:</legend>
+          <p>
+            <input type="radio" name="type" value="article,page,product" id="type-all" checked>
+            <label for="type-all">Everywhere</label>
 
-          <input type="radio" name="type" value="product" id="type-product">
-          <label for="type-product">Products</label>
+            <input type="radio" name="type" value="product" id="type-product">
+            <label for="type-product">Products</label>
 
-          <input type="radio" name="type" value="article" id="type-article">
-          <label for="type-article">Articles</label>
+            <input type="radio" name="type" value="article" id="type-article">
+            <label for="type-article">Articles</label>
 
-          <input type="radio" name="type" value="page" id="type-page">
-          <label for="type-page">Pages</label>
-        </p>
-      </fieldset>
-      <fieldset>
-        <legend>Word match:</legend>
-        <p>If you select <em>loose</em>, a search for <q>micro</q> will match <q>microwave</q> and <q>microcomputer</q>.</p>
-        <p>
-          <input type="radio" name="options[prefix]" value="none" id="prefix-none" checked>
-          <label for="prefix-none">Strict</label>
+            <input type="radio" name="type" value="page" id="type-page">
+            <label for="type-page">Pages</label>
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Word match:</legend>
+          <p>If you select <em>loose</em>, a search for <q>micro</q> will match <q>microwave</q> and <q>microcomputer</q>.</p>
+          <p>
+            <input type="radio" name="options[prefix]" value="none" id="prefix-none" checked>
+            <label for="prefix-none">Strict</label>
 
-          <input type="radio" name="options[prefix]" value="last" id="prefix-last">
-          <label for="prefix-last">Loose</label>
-        </p>
-      </fieldset>
+            <input type="radio" name="options[prefix]" value="last" id="prefix-last">
+            <label for="prefix-last">Loose</label>
+          </p>
+        </fieldset>
+      </details>
     </form>
   </section>
 
