@@ -55,6 +55,7 @@
   </section>
 
   {% if search.performed %}
+    {% comment %} Some search results {% endcomment %}
     {% if search.results_count > 0 %}
       <section aria-label="Search result{% unless search.results_count == 1 %}s{% endunless %} for {{ search.terms | escape }}">
         <h2>
@@ -74,6 +75,8 @@
         </a>
         {% endfor %}
       </section>
+
+    {% comment %} No search results {% endcomment %}
     {% else %}
       <section aria-label="No results for {{ search.terms | escape }}, I'm afraid">
         <h2>No results for <q>{{ search.terms | escape }}</q>, I'm afraid</h2>
@@ -132,5 +135,4 @@ options accurately.
   }
 })();
 </script>
-
 <!-- end {{ template }} -->
