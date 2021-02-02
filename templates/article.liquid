@@ -42,8 +42,10 @@
   {% assign current_article_id = article.id %}
   {% assign article_total = 0 %}
   {% assign article_tags = article.tags %}
+  {% assign delimiter = ',' %}
+  {% assign cta_ids = '' %}{% comment %} Keeping track of the IDs of the CTAs we've already used {% endcomment %}
+
   {% for article in blog.articles %}
-    {% comment %} What happens if we don't find enough articles? {% endcomment %}
     {% if article_total < related_articles_count %}
       {% comment %} Does the current article share a tag with the article on the page? {% endcomment %}
       {% for tag in article.tags %}
@@ -60,6 +62,10 @@
       {% endcomment %}
       {% if article.id != current_article_id and matches_tag %}
         {% assign article_total = article_total | plus: 1 %}
+        {% unless cta_ids == '' %}
+          {% assign cta_ids = cta_ids | append: delimiter %}
+        {% endunless %}
+        {% assign cta_ids = cta_ids | append: article.id %}
         {% render 'blogcta', article: article %}
       {% endif %}
     {% else %}
@@ -67,10 +73,16 @@
     {% endif %}
   {% endfor %}
 
-  {% comment %} Not enough or no related articles found: making up the related_articles_count figure with the most recent blog posts {% endcomment %}
+  {% comment %} Not enough or no related articles found: making up the related_articles_count figure with the most recent blog posts (which have not already appeared above) {% endcomment %}
   {% if article_total < related_articles_count 0 %}
     {% for article in blog.articles %}
-      {% if article.id != current_article_id and article_total < related_articles_count %}
+      {% comment %} Has this post already appeared in the tag loop? {% endcomment %}
+      {% if cta_ids contains article.id %}
+        {% assign not_appeared = false %}
+      {% else %}
+        {% assign not_appeared = true %}
+      {% endif %}
+      {% if article.id != current_article_id and not_appeared and article_total < related_articles_count %}
         {% assign article_total = article_total | plus: 1 %}
         {% render 'blogcta', article: article %}
       {% endif %}
