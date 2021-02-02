@@ -92,7 +92,7 @@
     </h2>
     {% paginate article.comments by 5 %}
       {% for comment in article.comments %}
-        <blockquote itemprop="comment"]>
+        <blockquote itemprop="comment">
           {{ comment.content }}
           <footer>
             <p><strong>{{ comment.author }}</strong> {{ comment.created_at | date: format: 'long' }}</p>
