@@ -82,7 +82,7 @@
 {% comment %} Article comments. Note that the ID is useful as a #comments hash is added to the URL when users have completed the new comment form. {% endcomment %}
 {% if blog.comments_enabled? %}
   {% assign number_of_comments = article.comments_count %}
-  <aside aria-label="{{ number_of_comments }} comments" id="comments">
+  <aside aria-label="{{ number_of_comments }} comment{% unless number_of_comments == 1 %}s{% endunless %}" id="comments">
     <h2>
       <span itemprop="commentCount">{{ number_of_comments }}</span>
       comment{% unless number_of_comments == 1 %}s{% endunless %}
