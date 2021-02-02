@@ -64,19 +64,21 @@
       {% endcomment %}
       {% if article.id != current_article_id and matches_tag %}
         {% assign article_total = article_total | plus: 1 %}
-        {% render blogcta, article: article %}
+        {% render 'blogcta', article: article %}
       {% endif %}
     {% else %}
       {% break %}
     {% endif %}
   {% endfor %}
 
-  {% comment %}
-  An alternative approach would be to pull in the three most recent news articles,
-  as long as they were not the article on the page.
-  {% endcomment %}
-  {% if article_total == 0 %}
-    <p>No related articles found</p>
+  {% comment %} Not enough or no related articles found: making up the related_articles_count figure with the most recent blog posts {% endcomment %}
+  {% if article_total < related_articles_count 0 %}
+    {% for article in blog.articles %}
+      {% if article.id != current_article_id and article_total < related_articles_count %}
+        {% assign article_total = article_total | plus: 1 %}
+        {% render 'blogcta', article: article %}
+      {% endif %}
+    {% endfor %}
   {% endif %}
 
 </aside>

@@ -25,7 +25,7 @@
   {% endif %}
 
   {% for article in blog.articles %}
-    {% render blogcta, article: article %}
+    {% render 'blogcta', article: article %}
   {% endfor %}
 
   {% if paginate.pages > 1 %}
