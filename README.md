@@ -9,6 +9,7 @@ A version of [Shopify Theme Kit](https://shopify.github.io/themekit/), with addi
 - [Product search and filtering, without apps](https://finetunepartners.com/insights/product-filtering-in-shopify-without-apps/)
 - [Semi-intelligent 404 pages](https://finetunepartners.com/insights/improving-your-shopify-404-page/)
 - [Site search filtering](https://finetunepartners.com/insights/advanced-search-in-shopify/)
+- [Blog posts automatically pull through related blog posts](https://finetunepartners.com/insights/pulling-in-related-blogs-in-shopify/)
 - Typeface and colour selection via Shopify front end
 - Favicon management from Shopify front end
 - Microdata markup for enhanced <abbr title="Search Engine Optimisation">SEO</abbr>
