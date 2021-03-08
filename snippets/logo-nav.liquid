@@ -7,7 +7,7 @@
         {% if link.active %}
         <em title="You are here"><a href="{{ link.url }}">{{ link.title }}</a></em>
         {% else %}
-        <a href="{{ link.url }}" class="{% if linklists[child_list_handle].links != blank %} btn-nav__parent{% endif %}">{{ link.title }}</a>
+        <a href="{{ link.url }}">{{ link.title }}</a>
         {% endif %}
         {% if linklists[child_list_handle].links != blank %}
           <ul>

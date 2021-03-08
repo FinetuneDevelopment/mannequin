@@ -4,7 +4,7 @@
     {% endunless %}
     <address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
         {% unless shop.name == blank %}
-        <span class="text-uppercase" itemprop="name">{{ shop.name }}</span><br>
+        <span itemprop="name">{{ shop.name }}</span><br>
         {% endunless %}
         {% unless shop.address.street == blank %}
         <span itemprop="streetAddress">{{ shop.address.street }}</span><br>

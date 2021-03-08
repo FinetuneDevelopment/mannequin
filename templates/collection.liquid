@@ -164,9 +164,7 @@
 {% endif %}
 
 {% comment %} Links to enable Shopify editors to change the metafield data {% endcomment %}
-{% capture tempadmin %}{% render 'admin-check' %}{% endcapture %}
-{% assign admin = tempadmin | strip %}
-{% if admin == 'true' %}
+<aside class="admin-only">
   <h3>Edit metafield data</h3>
   <ul>
     <li><a href="/admin/bulk?resource_name=Product&edit=metafields.SuitableFor.Vegetarians%3Aboolean%2Cmetafields.SuitableFor.Vegans%3Aboolean%2Cmetafields.SuitableFor.Children%3Aboolean%2Cmetafields.SuitableFor.NutAllergy%3Aboolean%2Cmetafields.SuitableFor.Frail%3Aboolean%2Cmetafields.SuitableFor.Pregnant%3Aboolean">Edit Suitable for</a></li>
@@ -175,7 +173,7 @@
     <li><a href="/admin/bulk?resource_name=Product&edit=metafields.tog.light%3Aboolean%2Cmetafields.tog.medium%3Aboolean%2Cmetafields.tog.heavy%3Aboolean">Edit TOG metafields</a></li>
     <li><a href="/admin/bulk?resource_name=Product&edit=metafields.material.wool%3Aboolean%2Cmetafields.material.wool-mix%3Aboolean%2Cmetafields.material.cotton%3Aboolean%2Cmetafields.material.cotton-mix%3Aboolean%2Cmetafields.material.cashmere%3Aboolean%2Cmetafields.material.cashmere-mix%3Aboolean%2Cmetafields.material.angora%3Aboolean%2Cmetafields.material.angora-mix%3Aboolean%2Cmetafields.material.man-made%3Aboolean">Edit material metafields</a></li>
   </ul>
-{% endif %}
+</aside>
 
 {% comment %} Product listing {% endcomment %}
 {% paginate collection.products by 2 %}

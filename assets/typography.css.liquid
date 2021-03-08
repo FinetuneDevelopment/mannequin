@@ -17,3 +17,8 @@ body {
 a {
   color: {{ settings.color_brand_dark }};
 }
+
+.admin-only { display: none; }
+
+/* This data attribute is added to the body tag by JavaScript */
+[data-admin="true"] .admin-only { display: block; }
