@@ -46,6 +46,10 @@
     {{ content_for_layout }}
   </main>
 
+  <details>
+    <summary>Shopping cart</summary>
+    {% render 'cart' %}
+  </details>
   {% render 'footer' %}
   <script src="{{ 'application.js' | asset_url }}"></script>
 </body>

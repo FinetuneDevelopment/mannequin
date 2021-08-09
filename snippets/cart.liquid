@@ -1,0 +1,53 @@
+<!-- start cart.liquid -->
+{% if cart.item_count > 0 %}
+  <form action="{{ routes.cart_url }}" method="post">
+    <table>
+      <thead>
+        <th scope="col" colspan="2"><abbr title="Product">Prod</abbr></th>
+        <th scope="col">Price</th>
+        <th scope="col"><abbr title="Quantity">Qty</abbr></th>
+        <th scope="col">Total</th>
+      </thead>
+      <tbody>
+        {% for item in cart.items %}
+          <tr>
+            <td>
+              <a href="{{ item.url | within: collections.all }}">
+                <img src="{{ item | img_url: 'small' }}" alt="{{ item.title | escape }}">
+              </a>
+            </td>
+            <td>
+              <a href="{{ item.url }}">{{ item.product.title }}</a>
+              {{ item.variant.title }}
+              <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0">remove</a>
+            </td>
+            <td>{{ item.price | money }}</td>
+            <td>
+              <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+            </td>
+            <td>
+              {% if item.original_line_price != item.line_price %}{{ item.original_line_price | money }}{% endif %}
+              {{ item.line_price | money }}
+              {% for discount in item.discounts %}{{ discount.title }}{% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="4">Sub total</th>
+          <td>{{ cart.total_price | money }}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <p>
+      <button type="submit" name="update">Update</button>
+      <button type="submit" name="checkout">Checkout</button>
+    </p>
+  </form>
+
+{% else %}
+  <p>Your cart is empty.</p>
+{% endif %}
+
+<!-- end cart.liquid -->
