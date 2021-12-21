@@ -1,41 +1,32 @@
-<!-- faqs.liquid -->
-{% if product.metafields.faqs.question_1 != blank or product.metafields.faqs.answer_1 != blank %}
+<!-- faq.liquid -->
+{% if product.metafields.faq.question_1 != blank or product.metafields.faq.answer_1 != blank %}
   {% assign q1_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_1 != blank or product.metafields.faqs.answer_1 != blank %}
-  {% assign q1_exists = true %}
-{% endif %}
-{% if product.metafields.faqs.question_1 != blank or product.metafields.faqs.answer_1 != blank %}
-  {% assign q1_exists = true %}
-{% endif %}
-{% if product.metafields.faqs.question_1 != blank or product.metafields.faqs.answer_1 != blank %}
-  {% assign q1_exists = true %}
-{% endif %}
-{% if product.metafields.faqs.question_2 != blank or product.metafields.faqs.answer_2 != blank %}
+{% if product.metafields.faq.question_2 != blank or product.metafields.faq.answer_2 != blank %}
   {% assign q2_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_3 != blank or product.metafields.faqs.answer_3 != blank %}
+{% if product.metafields.faq.question_3 != blank or product.metafields.faq.answer_3 != blank %}
   {% assign q3_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_4 != blank or product.metafields.faqs.answer_4 != blank %}
+{% if product.metafields.faq.question_4 != blank or product.metafields.faq.answer_4 != blank %}
   {% assign q4_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_5 != blank or product.metafields.faqs.answer_5 != blank %}
+{% if product.metafields.faq.question_5 != blank or product.metafields.faq.answer_5 != blank %}
   {% assign q5_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_6 != blank or product.metafields.faqs.answer_6 != blank %}
+{% if product.metafields.faq.question_6 != blank or product.metafields.faq.answer_6 != blank %}
   {% assign q6_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_7 != blank or product.metafields.faqs.answer_7 != blank %}
+{% if product.metafields.faq.question_7 != blank or product.metafields.faq.answer_7 != blank %}
   {% assign q7_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_8 != blank or product.metafields.faqs.answer_8 != blank %}
+{% if product.metafields.faq.question_8 != blank or product.metafields.faq.answer_8 != blank %}
   {% assign q8_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_9 != blank or product.metafields.faqs.answer_9 != blank %}
+{% if product.metafields.faq.question_9 != blank or product.metafields.faq.answer_9 != blank %}
   {% assign q9_exists = true %}
 {% endif %}
-{% if product.metafields.faqs.question_10 != blank or product.metafields.faqs.answer_10 != blank %}
+{% if product.metafields.faq.question_10 != blank or product.metafields.faq.answer_10 != blank %}
   {% assign q10_exists = true %}
 {% endif %}
 {% if q1_exists or q2_exists or q3_exists or q4_exists or q5_exists or q6_exists or q7_exists or q8_exists or q9_exists or q10_exists %}
@@ -49,35 +40,41 @@
   <section aria-label="{{ section.settings.title }}">
     <h2>{{ section.settings.title }}</h2>
     {% if q1_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_1, answer: product.metafields.faqs.answer_1 %}
+      {% render "faq-panel", question: product.metafields.faq.question_1, answer: product.metafields.faq.answer_1 %}
     {% endif %}
     {% if q2_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_2, answer: product.metafields.faqs.answer_2 %}
+      {% render "faq-panel", question: product.metafields.faq.question_2, answer: product.metafields.faq.answer_2 %}
     {% endif %}
     {% if q3_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_3, answer: product.metafields.faqs.answer_3 %}
+      {% render "faq-panel", question: product.metafields.faq.question_3, answer: product.metafields.faq.answer_3 %}
     {% endif %}
     {% if q4_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_4, answer: product.metafields.faqs.answer_4 %}
+      {% render "faq-panel", question: product.metafields.faq.question_4, answer: product.metafields.faq.answer_4 %}
     {% endif %}
     {% if q5_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_5, answer: product.metafields.faqs.answer_5 %}
+      {% render "faq-panel", question: product.metafields.faq.question_5, answer: product.metafields.faq.answer_5 %}
     {% endif %}
     {% if q6_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_6, answer: product.metafields.faqs.answer_6 %}
+      {% render "faq-panel", question: product.metafields.faq.question_6, answer: product.metafields.faq.answer_6 %}
     {% endif %}
     {% if q7_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_7, answer: product.metafields.faqs.answer_7 %}
+      {% render "faq-panel", question: product.metafields.faq.question_7, answer: product.metafields.faq.answer_7 %}
     {% endif %}
     {% if q8_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_8, answer: product.metafields.faqs.answer_8 %}
+      {% render "faq-panel", question: product.metafields.faq.question_8, answer: product.metafields.faq.answer_8 %}
     {% endif %}
     {% if q9_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_9, answer: product.metafields.faqs.answer_9 %}
+      {% render "faq-panel", question: product.metafields.faq.question_9, answer: product.metafields.faq.answer_9 %}
     {% endif %}
     {% if q10_exists %}
-      {% render "faq-panel", question: product.metafields.faqs.question_10, answer: product.metafields.faqs.answer_10 %}
+      {% render "faq-panel", question: product.metafields.faq.question_10, answer: product.metafields.faq.answer_10 %}
     {% endif %}
+    {% comment %} Capture any product-wide questions and answers {% endcomment %}
+    {% for qanda in section.blocks %}
+      {% if qanda.settings.title != '' %}
+        {% render "faq-panel", question: qanda.settings.title, answer: qanda.settings.answer %}
+      {% endif %}
+    {% endfor %}
   </section>
 {% endif %}
 
@@ -93,9 +90,25 @@
       "info": "The heading which appears above the frequently asked question panel."
     }
   ],
+  "blocks": [{
+    "name": "Q&A block",
+    "type": "qanda",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Question"
+      },
+      {
+        "type": "richtext",
+        "id": "answer",
+        "label": "Answer"
+      }
+    ]
+  }],
   "presets": [
      { "name": "Frequently Asked Questions" }
    ]
 }
 {% endschema %}
-<!-- end faqs.liquid -->
+<!-- end faq.liquid -->
